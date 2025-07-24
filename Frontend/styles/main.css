@@ -1,0 +1,75 @@
+body {
+    font-family: 'Cascadia Code', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+#gameContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#timer {
+    font-size: 2em;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+#typingContainer {
+    width: 80vw;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    max-height: calc(1.5em * 3);
+    overflow: hidden;
+    line-height: 1.5em;
+    font-size: 24px;
+}
+
+.word {
+    display: flex;
+    margin-right: 0.5em;
+    flex-shrink: 0;
+}
+
+.letter {
+    display: inline-block;
+}
+
+.wordActive {
+    font-weight: bold;
+}
+
+.cursor {
+    border-left: 2px solid #000;
+    animation: blink 1s steps(1) infinite;
+    margin-left: -1px; /* Ajuste para que el cursor no empuje la letra */
+}
+
+.extra-cursor {
+    height: 1.2em; /* Altura del cursor */
+    display: inline-block;
+}
+
+@keyframes blink {
+    0%, 50% {
+        border-color: #000;
+    }
+    51%, 100% {
+        border-color: transparent;
+    }
+}
+
+.correct {
+    color: green;
+}
+
+.incorrect {
+    color: red;
+}
