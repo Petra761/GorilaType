@@ -1,13 +1,21 @@
 console.log("Script loaded");
 
 class Game {
-    constructor(text) {
+    constructor(text,duration) {
         this.typingContainer = document.getElementById("typingContainer");
+        this.timerElement = document.getElementById("timer");
         this.text = text;
         this.words = this.splitWords(text);
         this.currentWordIndex = 0;
         this.charIndex = 0;
+
+        this.duration = duration;
+        this.timeRemaining = duration;
+        this.timerId = null;
+        this.gameEnded = false;
+
         this.setEnvironment();
+        this.startTimer();
     }
 
     splitWords(cadena) {
@@ -34,9 +42,32 @@ class Game {
         this.updateCursor();
     }
 
+    startTimer() {
+        this.timerId = setInterval(() => {
+            this.timeRemaining--;
+            this.timerElement.textContent = this.timeRemaining;
+            if (this.timeRemaining <= 0) {
+                this.endGame();
+            }
+        }, 1000);
+    }
+
+    endGame() {
+        clearInterval(this.timerId);
+        this.gameEnded = true;
+        this.timerElement.textContent = "Tiempo!";
+        document.querySelectorAll(".cursor").forEach(cursor => cursor.classList.remove('cursor'));
+        console.log("Game ended");
+    }
+
+
     handleTyping(e) {
         const activeWord = document.querySelector('.wordActive');
         const letters = activeWord.querySelectorAll('.letter');
+
+        if (this.gameEnded) {
+            return;
+        }
 
         if (e.key === 'Backspace') {
             if (this.charIndex > 0) {
@@ -169,7 +200,7 @@ class Game {
 }
 
 const txt = "ohayo sekai good morning world lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
-const game = new Game(txt);
+const game = new Game(txt,30);
 
 document.addEventListener('keydown', (e) => {
     game.handleTyping(e);
