@@ -23,18 +23,23 @@ body {
 #typingContainer {
     width: 80vw;
     margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
     max-height: calc(1.5em * 3);
     overflow: hidden;
     line-height: 1.5em;
-    font-size: 24px;
+    font-size: 25px;
+}
+
+#wordsWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    transition: transform 0.3s ease-in-out; 
 }
 
 .word {
     display: flex;
     margin-right: 0.5em;
+    margin-bottom: 0.2em;
     flex-shrink: 0;
 }
 
@@ -49,27 +54,21 @@ body {
 .cursor {
     border-left: 2px solid #000;
     animation: blink 1s steps(1) infinite;
-    margin-left: -1px; /* Ajuste para que el cursor no empuje la letra */
+    margin-left: -1px; 
 }
 
 .extra-cursor {
-    height: 1.2em; /* Altura del cursor */
+    height: 1.2em;
     display: inline-block;
 }
 
 @keyframes blink {
-    0%, 50% {
-        border-color: #000;
-    }
-    51%, 100% {
+    50% {
         border-color: transparent;
     }
 }
 
-.correct {
-    color: green;
-}
-
-.incorrect {
-    color: red;
-}
+.correct { color: green; }
+.incorrect { color: red; }
+.wordCorrect { opacity: 0.7; }
+.wordIncorrect { text-decoration: underline red; }
