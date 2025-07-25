@@ -16,6 +16,8 @@ class Game {
         this.timerId = null;
         this.gameEnded = true;
 
+        this.timerStarted = false;
+
         this.correctChars = 0;
         this.incorrectChars = 0;
         this.totalChars = 0;
@@ -29,8 +31,7 @@ class Game {
         if (this.words.length > 0) {
             this.gameEnded = false;
             this.setEnvironment();
-            this.startTimer();
-            console.log("Game initialized with words:", this.words);
+            this.timerElement.textContent = this.duration;
         }else{
             this.timerElement.textContent = "Error";
         }
@@ -42,7 +43,7 @@ class Game {
     }
 
     async loadWords() {
-        const ruta = 'data/es_level1.json';
+        const ruta = 'data/en_level1.json';
         try {
             const response = await fetch(ruta);
             if (!response.ok) {
@@ -142,6 +143,12 @@ class Game {
                 
             }
         } else if (e.key.length === 1 && /[\p{L}0-9]/u.test(e.key)) {
+
+            if (!this.timerStarted) {
+                this.startTimer();
+                this.timerStarted = true;
+            }
+
             if (this.charIndex < letters.length) {
                 const currentLetter = letters[this.charIndex];
                 if (e.key === currentLetter.textContent) {
