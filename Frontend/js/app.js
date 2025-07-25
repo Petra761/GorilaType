@@ -266,20 +266,10 @@ class Game {
         this.updateCursor();
     }
 
-    results () {
-        const wpm = (this.correctChars / 5) / (this.duration / 60);
-        const cpm = this.correctChars / (this.duration / 60);
-        const accuracy = ((this.correctChars / this.totalChars) * 100).toFixed(2);
-
-        console.log(`WPM: ${wpm.toFixed(2)}`);
-        console.log(`CPM: ${cpm.toFixed(2)}`);
-        console.log(`Accuracy: ${accuracy}%`);
-    }
-
     handleScroll(direction) {
         const words = this.wordsWrapper.querySelectorAll('.word');
         const currentWordEl = words[this.currentWordIndex];
-
+        
         if (direction === 'next') {
             if (this.currentWordIndex === 0) return;
             
@@ -288,7 +278,7 @@ class Game {
             if (currentWordEl.offsetTop > prevWordEl.offsetTop) {
                 this.currentLine++;
             }
-
+            
             if (this.currentLine > 2) {
                 const scrollAmount = currentWordEl.offsetTop - prevWordEl.offsetTop;
                 this.scrollOffset += scrollAmount;
@@ -300,7 +290,7 @@ class Game {
         else if (direction === 'previous') {
             const nextWordEl = words[this.currentWordIndex];
             const newActiveWordEl = words[this.currentWordIndex - 1];
-
+            
             if (newActiveWordEl.offsetTop < nextWordEl.offsetTop) {
                 
                 if (this.currentLine === 2 && this.scrollOffset > 0) {
@@ -317,6 +307,43 @@ class Game {
             }
         }
     }
+
+    results () {
+        const wpm = (this.correctChars / 5) / (this.duration / 60);
+        const cpm = this.correctChars / (this.duration / 60);
+        const accuracy = ((this.correctChars / this.totalChars) * 100).toFixed(2);
+    
+        console.log(`WPM: ${wpm.toFixed(2)}`);
+        console.log(`CPM: ${cpm.toFixed(2)}`);
+        console.log(`Accuracy: ${accuracy}%`);
+    }
+
+    async restartGame() {
+        console.log("Reiniciando el juego...");
+
+        clearInterval(this.timerId);
+
+        this.timeRemaining = this.duration;
+        this.timerStarted = false;
+        this.gameEnded = true;
+
+        this.currentWordIndex = 0;
+        this.charIndex = 0;
+
+        this.correctChars = 0;
+        this.incorrectChars = 0;
+        this.totalChars = 0;
+        
+        this.currentLine = 1;
+        this.scrollOffset = 0;
+        
+        if (this.wordsWrapper) {
+            this.wordsWrapper.style.transform = 'translateY(0px)';
+        }
+        this.typingContainer.innerHTML = '';
+        
+        await this.init();
+    }
 }
 
 const game = new Game(120);
@@ -325,4 +352,12 @@ game.init().then(() => {
     document.addEventListener('keydown', (e) => {
         game.handleTyping(e);
     });
+});
+
+const restartButton = document.getElementById('restartButton');
+
+restartButton.addEventListener('click', () => {
+    game.restartGame();
+
+    restartButton.blur(); 
 });

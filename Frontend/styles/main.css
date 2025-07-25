@@ -72,3 +72,23 @@ body {
 .incorrect { color: red; }
 .wordCorrect { opacity: 0.7; }
 .wordIncorrect { text-decoration: underline red; }
+
+#restartButton {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px;
+    font-size: 1em;
+    background-color: #e7e7e7;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    
+    cursor: pointer;
+
+    user-select: none;
+    
+    transition: background-color 0.2s ease;
+}
+
+#restartButton:hover {
+    background-color: #dcdcdc;
+}
