@@ -1,22 +1,25 @@
 console.log("Script loaded");
 
 class Game {
-    constructor(duration) {
+    constructor(config) {
         this.typingContainer = document.getElementById("typingContainer");
-        this.timerElement = document.getElementById("timer");
-
+        this.progressElement = document.getElementById("gameProgress");
         this.wordsWrapper = null;
+
+        this.gameMode = config.mode || 'time';
+        this.duration = this.gameMode === 'time' ? config.value: 0;
+        this.wordCount = this.gameMode === 'words' ? config.value : 0;
 
         this.words = [];
         this.currentWordIndex = 0;
         this.charIndex = 0;
-
-        this.duration = duration;
-        this.timeRemaining = duration;
-        this.timerId = null;
         this.gameEnded = true;
 
+        this.timeRemaining = this.duration;
+        this.timerId = null;
         this.timerStarted = false;
+        this.startTime = 0;
+        this.endTime = 0;
 
         this.correctChars = 0;
         this.incorrectChars = 0;
@@ -31,16 +34,16 @@ class Game {
         if (this.words.length > 0) {
             this.gameEnded = false;
             this.setEnvironment();
-            this.timerElement.textContent = this.duration;
+            this.UpdateProgressDisplay();
         }else{
-            this.timerElement.textContent = "Error";
+            this.progressElement.textContent = "Error";
         }
     }
     
-    splitWords(cadena) {
-        const words = cadena.split(' ');
-        return this.randomizeWords(words);
-    }
+    // splitWords(cadena) {
+    //     const words = cadena.split(' ');
+    //     return this.randomizeWords(words);
+    // }
 
     async loadWords() {
         const ruta = 'data/en_level1.json';
@@ -50,7 +53,12 @@ class Game {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            return this.ramdomizeWords(data);
+            const randomizedWords = this.ramdomizeWords(data);
+
+            if (this.gameMode === 'words') {
+                return randomizedWords.slice(0, this.wordCount);
+            }
+            return randomizedWords
         } catch (error) {
             console.error("Error fetching words:", error);
             return [];
@@ -69,7 +77,6 @@ class Game {
 
     setEnvironment() {
         this.typingContainer.innerHTML = '';
-        
         this.wordsWrapper = document.createElement('div');
         this.wordsWrapper.id = 'wordsWrapper';
 
@@ -92,36 +99,63 @@ class Game {
         this.updateCursor();
     }
 
+    UpdateProgressDisplay() {
+        if (this.gameMode === 'time') {
+            this.progressElement.textContent = this.timeRemaining;
+        } else if (this.gameMode === 'words') {
+            const wordsToShow = Math.min(this.currentWordIndex, this.wordCount);
+            this.progressElement.textContent = `${this.currentWordIndex + 1}/${this.wordCount}`;
+        }
+    }
+
     startTimer() {
-        this.timerId = setInterval(() => {
-            this.timeRemaining--;
-            this.timerElement.textContent = this.timeRemaining;
-            if (this.timeRemaining <= 0) {
-                this.endGame();
-            }
-        }, 1000);
+        if (this.timerStarted) return;
+
+        this.timerStarted = true;
+        this.startTime = Date.now();
+
+        if (this.gameMode === 'time') {
+            this.timerId = setInterval(() => {
+                this.timeRemaining--;
+                this.UpdateProgressDisplay();
+                if (this.timeRemaining <= 0) {
+                    this.endGame();
+                }
+            }, 1000);
+        }
     }
 
     endGame() {
         if (this.gameEnded) {
             return;
         }
-
-        clearInterval(this.timerId);
+        
         this.gameEnded = true;
-        this.timerElement.textContent = "Tiempo!";
+        this.endTime = Date.now();
+        clearInterval(this.timerId);
+
+        if (this.gameMode === 'time') {
+            this.progressElement.textContent = "Tiempo!";
+        }else if (this.gameMode === 'words') {
+            this.progressElement.textContent = `${this.wordCount}/${this.wordCount}`;
+        }
+
         document.querySelectorAll(".cursor").forEach(cursor => cursor.classList.remove('cursor'));
         console.log("Game ended");
         this.results();
     }
 
     handleTyping(e) {
-        const activeWord = document.querySelector('.wordActive');
-        const letters = activeWord.querySelectorAll('.letter');
-
         if (this.gameEnded) {
             return;
         }
+
+        if (e.key.length === 1 && /[\p{L}0-9]/u.test(e.key)) {
+            this.startTimer();
+        }
+        const activeWord = document.querySelector('.wordActive');
+        const letters = activeWord.querySelectorAll('.letter');
+
 
         if (e.key === 'Backspace') {
             if (this.charIndex > 0) {
@@ -138,17 +172,10 @@ class Game {
                 }
             }
         } else if (e.key === ' ') {
-            if (this.charIndex > 0) {
+            if (this.charIndex > 0 || letters.length === 0) {
                 this.moveToNextWord();
-                
             }
         } else if (e.key.length === 1 && /[\p{L}0-9]/u.test(e.key)) {
-
-            if (!this.timerStarted) {
-                this.startTimer();
-                this.timerStarted = true;
-            }
-
             if (this.charIndex < letters.length) {
                 const currentLetter = letters[this.charIndex];
                 if (e.key === currentLetter.textContent) {
@@ -174,72 +201,43 @@ class Game {
         this.updateCursor();
     }
 
-    updateCursor() {
-        document.querySelectorAll('.cursor').forEach(cursor => cursor.classList.remove('cursor'));
 
-        const activeWord = document.querySelector('.wordActive');
-        if (activeWord) {
-            const letters = activeWord.querySelectorAll('.letter');
-            if (this.charIndex < letters.length) {
-                letters[this.charIndex].classList.add('cursor');
-            } else {
-                const cursorSpan = document.createElement('span');
-                cursorSpan.className = 'cursor extra-cursor';
-                activeWord.appendChild(cursorSpan);
-            }
-        }
-    }
-
-    isCorrectWord(wordElement){
-        if (wordElement.querySelector('.extra')){
-            return false;
-        }
-
-        const letters = wordElement.querySelectorAll('.letter');
-        const origialWord = this.words[this.currentWordIndex];
-        
-        for (let i = 0; i < letters.length; i++) {
-            if (!letters[i].classList.contains('correct')) {
-                return false;
-            }
-        }
-
-        return letters.length === origialWord.length;
-    }
 
     moveToNextWord() {
         const words = document.querySelectorAll('.word');
         const currentWordElement = words[this.currentWordIndex];
 
-        if (this.isCorrectWord(words[this.currentWordIndex])) {
+        if (this.isCorrectWord(currentWordElement)) {
             currentWordElement.classList.add('wordCorrect');
         }
 
         const extraCursor = document.querySelector('.extra-cursor');
         if (extraCursor) extraCursor.remove();
 
-        if (this.currentWordIndex < this.words.length - 1) {
-            words[this.currentWordIndex].classList.remove('wordActive');
-            this.currentWordIndex++;
-            this.charIndex = 0;
-            words[this.currentWordIndex].classList.add('wordActive');
-            this.updateCursor();
-            this.handleScroll('next');
+        if (this.currentWordIndex === words.length - 1) {
+            if (this.gameMode === 'words') {
+                this.currentWordIndex++;
+                this.UpdateProgressDisplay();
+                this.endGame();
+            }
+            return;
         }
+
+        words[this.currentWordIndex].classList.remove('wordActive');
+        this.currentWordIndex++;
+        this.charIndex = 0;
+        words[this.currentWordIndex].classList.add('wordActive');
+
+        this.updateCursor();
+        this.handleScroll('next');
+        this.UpdateProgressDisplay();
     }
 
     moveToPreviousWord() {
         const words = document.querySelectorAll('.word');
-
-        if (this.currentWordIndex === 0) {
-            return;
-        }
-
+        if (this.currentWordIndex === 0) return;
         const previousWordElement = words[this.currentWordIndex - 1];
-
-        if (previousWordElement.classList.contains('wordCorrect')) {
-            return;
-        }
+        if (previousWordElement.classList.contains('wordCorrect')) return;
 
         this.handleScroll('previous');
 
@@ -262,8 +260,8 @@ class Game {
             }
         }
         this.charIndex = newCharIndex;
-
         this.updateCursor();
+        this.UpdateProgressDisplay();
     }
 
     handleScroll(direction) {
@@ -282,8 +280,7 @@ class Game {
             if (this.currentLine > 2) {
                 const scrollAmount = currentWordEl.offsetTop - prevWordEl.offsetTop;
                 this.scrollOffset += scrollAmount;
-                this.wordsWrapper.style.transform = `translateY(-${this.scrollOffset}px)`;
-                
+                this.wordsWrapper.style.transform = `translateY(-${this.scrollOffset}px)`;  
                 this.currentLine--; 
             }
         } 
@@ -309,9 +306,22 @@ class Game {
     }
 
     results () {
-        const wpm = (this.correctChars / 5) / (this.duration / 60);
-        const cpm = this.correctChars / (this.duration / 60);
-        const accuracy = ((this.correctChars / this.totalChars) * 100).toFixed(2);
+        let timeElapsedInMinutes;
+
+        if (this.gameMode === 'time') {
+            timeElapsedInMinutes = this.duration / 60;
+        } else if(this.gameMode === 'words') {
+            const timeelapsedInSeconds = (this.endTime - this.startTime) / 1000;
+            timeElapsedInMinutes = timeelapsedInSeconds / 60;
+        }
+
+        if(timeElapsedInMinutes <= 0){
+            console.log("No se ha completado suficiente tiempo texto para calcular el resultado.");
+        }
+
+        const wpm = (this.correctChars / 5) / timeElapsedInMinutes;
+        const cpm = this.correctChars / timeElapsedInMinutes;
+        const accuracy = this.totalChars > 0 ? ((this.correctChars / this.totalChars) * 100).toFixed(2) : 0;
     
         console.log(`WPM: ${wpm.toFixed(2)}`);
         console.log(`CPM: ${cpm.toFixed(2)}`);
@@ -320,12 +330,14 @@ class Game {
 
     async restartGame() {
         console.log("Reiniciando el juego...");
-
         clearInterval(this.timerId);
 
         this.timeRemaining = this.duration;
         this.timerStarted = false;
         this.gameEnded = true;
+
+        this.startTime = 0;
+        this.endTime = 0;
 
         this.currentWordIndex = 0;
         this.charIndex = 0;
@@ -344,9 +356,53 @@ class Game {
         
         await this.init();
     }
+    
+    updateCursor() {
+        document.querySelectorAll('.cursor').forEach(cursor => cursor.classList.remove('cursor'));
+
+        const activeWord = document.querySelector('.wordActive');
+        if (activeWord) {
+            const letters = activeWord.querySelectorAll('.letter');
+            if (this.charIndex < letters.length) {
+                letters[this.charIndex].classList.add('cursor');
+            } else {
+                const cursorSpan = document.createElement('span');
+                cursorSpan.className = 'cursor extra-cursor';
+                activeWord.appendChild(cursorSpan);
+            }
+        }
+    }
+
+    
+    isCorrectWord(wordElement){
+        if (wordElement.querySelector('.extra')){
+            return false;
+        }
+
+        const letters = wordElement.querySelectorAll('.letter');
+        const origialWord = this.words[this.currentWordIndex];
+        
+        for (let i = 0; i < letters.length; i++) {
+            if (!letters[i].classList.contains('correct')) {
+                return false;
+            }
+        }
+
+        return letters.length === origialWord.length;
+    }
 }
 
-const game = new Game(120);
+const game1 = {
+    mode: 'time',
+    value: 60
+}
+
+const game2 = {
+    mode: 'words',
+    value: 10
+}
+
+const game = new Game(game2);
 
 game.init().then(() => {
     document.addEventListener('keydown', (e) => {
@@ -355,9 +411,7 @@ game.init().then(() => {
 });
 
 const restartButton = document.getElementById('restartButton');
-
 restartButton.addEventListener('click', () => {
     game.restartGame();
-
-    restartButton.blur(); 
+    restartButton.blur();
 });
