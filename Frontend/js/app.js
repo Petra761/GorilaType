@@ -7,6 +7,7 @@ class Game {
         this.wordsWrapper = null;
 
         this.gameMode = config.mode || 'time';
+        this.language = config.language || 'en';
         this.duration = this.gameMode === 'time' ? config.value: 0;
         this.wordCount = this.gameMode === 'words' ? config.value : 0;
 
@@ -46,14 +47,14 @@ class Game {
     // }
 
     async loadWords() {
-        const ruta = 'data/en_level1.json';
+        const ruta = `data/${this.language}_level1.json`;
         try {
             const response = await fetch(ruta);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            const randomizedWords = this.ramdomizeWords(data);
+            const randomizedWords = this.randomizeWords(data);
 
             if (this.gameMode === 'words') {
                 return randomizedWords.slice(0, this.wordCount);
@@ -66,7 +67,7 @@ class Game {
     }
 
 
-    ramdomizeWords(words) {
+    randomizeWords(words) {
         const shuffledWords = words.slice();
         for (let i = shuffledWords.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -394,15 +395,17 @@ class Game {
 
 const game1 = {
     mode: 'time',
-    value: 60
+    value: 60,
+    language: 'en'
 }
 
 const game2 = {
     mode: 'words',
-    value: 10
+    value: 10,
+    language: 'es'
 }
 
-const game = new Game(game2);
+const game = new Game(game1);
 
 game.init().then(() => {
     document.addEventListener('keydown', (e) => {
