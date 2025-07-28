@@ -15,6 +15,7 @@
         </a>
         <div id="userAuth">
             <img src="assets/login.svg" alt="Iniciar Sesión" id="loginIcon">
+            <span id="usernameDisplay">User</span>
         </div>
     </header>
     <div id="authModalContainer" class="modal-hidden">
@@ -27,11 +28,13 @@
             <form id="loginForm">
                 <input type="text" placeholder="Nombre de usuario" class="auth-input">
                 <input type="password" placeholder="Contraseña" class="auth-input">
+                <div id="loginError" class="auth-error"></div>
                 <button type="submit" class="auth-button">Iniciar Sesión</button>
             </form>
             <form id="registerForm" style="display: none;">
                 <input type="text" placeholder="Nombre de usuario" class="auth-input">
                 <input type="password" placeholder="Contraseña" class="auth-input">
+                <div id="registerError" class="auth-error"></div> 
                 <button type="submit" class="auth-button">Registrarse</button>
             </form>
         </div>
