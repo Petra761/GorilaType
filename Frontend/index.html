@@ -9,8 +9,7 @@
 <body>
     <div id="gameContainer">
         <div id="optionBar">
-            <div class="optionGroup">
-                <label for="languageSelect">Idioma</label>
+            <div class="optionGroup selectWrapper">
                 <select id="languageSelect">
                     <option value="en">English</option>
                     <option value="es">Español</option>
@@ -18,9 +17,10 @@
             </div>
 
             <div id="optionGroup">
-                <span>Modo:</span>
-                <button class="modeSwitch" data-mode="words">Words</button>
-                <button class="modeSwitch" data-mode="Time">Time</button>
+                <div>
+                    <button class="modeSwitch" data-mode="words">Words</button>
+                    <button class="modeSwitch" data-mode="Time">Time</button>
+                </div>
             </div>
 
             <div id="dynamicOptions">
@@ -29,16 +29,12 @@
                     <button class="wordCount" data-words="30">30</button>
                     <button class="wordCount" data-words="50">50</button>
                     <button class="wordCount" data-words="100">100</button>
-                    <button id="customWordsBtn">N</button>
-                    <input type="number" id="customWordInput" placeholder="Palabras..." style="display: none; ">
                 </div>
                 <div id="timeOptions" style="display: none;">
                     <button class="timeDuration" data-time="15">15s</button>
                     <button class="timeDuration" data-time="30">30s</button>
                     <button class="timeDuration" data-time="60">60s</button>
                     <button class="timeDuration" data-time="120">120s</button>
-                    <button id="customTimeBtn">N</button>
-                    <input type="number" id="customTimeInput" style="display: none;" placeholder="Segundos...">
                 </div>
             </div>
         </div>

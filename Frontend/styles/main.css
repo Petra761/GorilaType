@@ -1,94 +1,179 @@
+
+
 body {
+    background-color: #0e2a32;
+    color: #b0c5ca;
     font-family: 'Cascadia Code', monospace;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 #gameContainer {
+    width: 90vw;
+    max-width: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 30px;
 }
 
-#gameProgress {
-    font-size: 2em;
-    margin-bottom: 20px;
+#optionBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 25px; 
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
+    border-radius: 8px;
+}
+
+.optionGroup, #dynamicOptions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#wordOptions, 
+#timeOptions, 
+.optionGroup > div {
+    background-color: #2b4a4f;
+    padding: 5px;
+    border-radius: 6px;
+    display: flex;
+}
+
+.modeSwitch, 
+.wordCount, 
+.timeDuration {
+    background-color: transparent;
+    color: #b0c5ca;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1em;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.modeSwitch.active, 
+.wordCount.active, 
+.timeDuration.active {
+    background-color: #f6c177;
+    color: #0e2a32;
     font-weight: bold;
 }
 
+.modeSwitch:not(.active):hover, 
+.wordCount:not(.active):hover, 
+.timeDuration:not(.active):hover {
+    background-color: rgba(176, 197, 202, 0.1);
+}
+
+.selectWrapper {
+    position: relative;
+    background-color: #2b4a4f;
+    border-radius: 6px;
+    transition: background-color 0.2s ease-in-out;
+}
+.selectWrapper:hover {
+    background-color: #3a5f66;
+}
+
+.selectWrapper::after {
+    content: '▼';
+    font-size: 0.8em;
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    color: #f6c177;
+    pointer-events: none;
+}
+
+#languageSelect {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: transparent;
+    border: none;
+    color: #b0c5ca;
+    padding: 13px 40px 13px 15px;
+    font-family: inherit;
+    font-size: 1em;
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+}
+
+#gameProgress {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #f6c177;
+    min-height: 1.2em;
+    display: flex;
+    align-items: center;
+}
+
 #typingContainer {
-    width: 80vw;
-    margin: 0 auto;
-    max-height: calc(1.5em * 3);
+    width: 100%;
+    height: calc(1.5em * 3);
     overflow: hidden;
     line-height: 1.5em;
-    font-size: 25px;
+    font-size: 28px;
+    text-align: left;
+    border: 2px solid transparent; 
 }
 
 #wordsWrapper {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    transition: transform 0.3s ease-in-out; 
+    transition: transform 0.3s ease-in-out;
 }
 
 .word {
     display: flex;
-    margin-right: 0.5em;
-    margin-bottom: 0.2em;
+    margin-right: 0.7em;
+    margin-bottom: 0.3em;
     flex-shrink: 0;
 }
 
-.letter {
-    display: inline-block;
-}
-
-.wordActive {
-    font-weight: bold;
-}
+.wordActive { color: #ffffff; }
+.correct { color: #c3e88d !important; }
+.incorrect { color: #f07178 !important; }
+.wordCorrect { opacity: 0.5; }
 
 .cursor {
-    border-left: 2px solid #000;
+    border-left: 2px solid #f6c177;
     animation: blink 1s steps(1) infinite;
-    margin-left: -1px; 
+    margin-left: -1px;
 }
-
-.extra-cursor {
-    height: 1.2em;
-    display: inline-block;
-}
-
-@keyframes blink {
-    50% {
-        border-color: transparent;
-    }
-}
-
-.correct { color: green; }
-.incorrect { color: red; }
-.wordCorrect { opacity: 0.7; }
-.wordIncorrect { text-decoration: underline red; }
+.extra-cursor { height: 1.2em; display: inline-block; }
+@keyframes blink { 50% { border-color: transparent; } }
 
 #restartButton {
     display: inline-block;
     padding: 10px 20px;
     margin-top: 20px;
     font-size: 1em;
-    background-color: #e7e7e7;
-    border: 1px solid #ccc;
+    background-color: transparent;
+    border: 1px solid #2b4a4f;
+    color: #b0c5ca;
     border-radius: 5px;
-    
     cursor: pointer;
-
     user-select: none;
-    
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 #restartButton:hover {
-    background-color: #dcdcdc;
+    background-color: #f6c177;
+    color: #0e2a32;
+    border-color: #f6c177;
 }
