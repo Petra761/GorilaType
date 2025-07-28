@@ -7,10 +7,88 @@
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
+    <header class="main-header">
+        <span class="logo">TypeMaster</span>
+        <span class="score">1243</span>
+        <span class="wpm-label">WPM</span>
+        <span class="username">Jugador123</span>
+        <span class="settings">&#9881;</span>
+    </header>
+    <div class="mode_game">
+        
+        <buttton class="change_languaje">Cambio de lenguaje</buttton>
+        <buttton class="words">palabras</buttton>
+        <buttton class="time">tiempo</buttton>
+        <buttton class="30">30</buttton>
+        <buttton class="60">60</buttton>
+        <buttton class="40">40</buttton>
+    </div>
+
+
+    <div class="v_body">
+
+
     <div id="gameContainer">
         <div id="timer">30</div>
         <div id="typingContainer"></div>
     </div>
-    <script src="js/app.js"></script>
+    </div>
+    <button>Reiniciar</button>
+    <!-- div para el model -->
+    <div class="div_model">
+        <!-- div para el model mostrando -->
+    <div class="outer">
+        <div class="modal">
+            <h2>TypeMaster</h2>
+            <div class="modal-tabs">
+                <button class="active">Iniciar Sesión</button>
+                <button>Registrarse</button>
+            </div>
+            <div class="modal-input">
+                <span class="icon">&#128100;</span>
+                <input type="text" placeholder="Nombre de Usuario o Correo Electrónico">
+            </div>
+            <div class="modal-input">
+                <span class="icon">&#128274;</span>
+                <input type="password" placeholder="Contraseña">
+            </div>
+            <button class="modal-login">Iniciar Sesión</button>
+            
+            
+        </div>
+    </div>
+        <!-- <div class="outer">
+            <div class="Popup">
+                <h2>TypeMaster</h2>
+            </div>
+            <div id="registros_btn">
+                <button>iniciar sesion</button>
+                <button>registrase</button>
+            </div>
+            
+            <div>
+                <input type="text" placeholder="Nombre de usuario">
+            </div>
+            <div>
+                <input type="password" placeholder="Password">
+            </div>
+            <button>Iniciar Sesion</button>
+        </div> -->
+
+ <button id="sho_btn" class="top-right-btn">
+        Iniciar Sesion   
+        </button>
+        
+    </div>
+   
+    <footer>
+        <div>hola1</div>
+        <div>hola 2</div>
+        <div>hola 3</div>
+
+    </footer>
+    <script src="js/app.js">
+    
+    </script>
 </body>
 </html>

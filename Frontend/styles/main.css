@@ -1,12 +1,13 @@
-body {
+.v_body {
     font-family: 'Cascadia Code', monospace;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 90vh;
     margin: 0;
     background-color: #f0f0f0;
 }
+
 
 #gameContainer {
     display: flex;
@@ -73,3 +74,150 @@ body {
 .incorrect {
     color: red;
 }
+
+
+/* apartado para el login */
+
+
+/* .outer{
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    
+    flex-direction: column;
+    width: 500px;
+    height: 700px;
+    justify-content: center;
+    align-items: center;
+
+} */
+
+
+
+
+.outer {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: blacl;
+    z-index: 1000;
+}
+
+/* Modal caja */
+.modal {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(60,80,200,0.15);
+    padding: 32px 32px 24px 32px;
+    width: 370px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal h2 {
+    font-size: 2.2em;
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: #222;
+}
+
+.modal-tabs {
+    display: flex;
+    width: 100%;
+    margin-bottom: 18px;
+}
+
+.modal-tabs button {
+    flex: 1;
+    padding: 10px 0;
+    border: none;
+    background: #f3f3f3;
+    color: #222;
+    font-size: 1em;
+    font-weight: 500;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.modal-tabs .active {
+    background: #fff;
+    border-bottom: 2px solid #2976f6;
+    color: #2976f6;
+}
+
+.modal-input {
+    display: flex;
+    align-items: center;
+    background: #f3f3f3;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    width: 100%;
+    padding: 0 12px;
+}
+
+.modal-input .icon {
+    font-size: 1.2em;
+    color: #888;
+    margin-right: 8px;
+}
+
+.modal-input input {
+    border: none;
+    background: transparent;
+    padding: 12px 0;
+    width: 100%;
+    font-size: 1em;
+    outline: none;
+}
+
+.modal-login {
+    background: #2976f6;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 0;
+    width: 100%;
+    font-size: 1.1em;
+    font-weight: 600;
+    margin: 12px 0 8px 0;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(41,118,246,0.12);
+    transition: background 0.2s;
+}
+
+.modal-login:hover {
+    background: #1856b6;
+}
+
+.modal-links {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+
+.top-right-btn {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+    z-index: 1100;
+    padding: 10px 22px;
+    font-size: 1.1em;
+    border-radius: 8px;
+    border: none;
+    background: #2976f6;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(41,118,246,0.12);
+    transition: background 0.2s;
+}
+
+
+

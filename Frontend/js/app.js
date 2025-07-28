@@ -176,3 +176,24 @@ document.addEventListener('keydown', (e) => {
 });
 
 console.log("Game initialized with text:", txt);
+
+
+
+
+
+let out=document.getElementsByClassName('outer')[0];
+let btn=document.querySelector('#sho_btn')
+
+btn.addEventListener('click',ev=>{
+    //aqui se deberia usar el flex y no el none
+            out.style.display= 'flex';
+            btn.style.display="none";
+            out.style.backgroundColor='rgba(60,80,200,0.15)';
+})
+let btb_session=document.querySelector('.modal-login');
+let div_model=document.getElementsByClassName('div_model')[0]
+btb_session.addEventListener('click',ev=>{
+    out.style.display='none';
+    btn.style.display='block';
+    
+})
