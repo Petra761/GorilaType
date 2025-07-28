@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded',() => {
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
 
-    loginIcon.addEventListener('click', () => {
-        authModalContainer.classList.remove('modal-hidden');
-    });
+    // loginIcon.addEventListener('click', () => {
+    //     authModalContainer.classList.remove('modal-hidden');
+    // });
 
     authModalContainer.addEventListener('click', (e) => {
         if (e.target === authModalContainer) {

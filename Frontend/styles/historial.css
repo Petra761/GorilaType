@@ -1,0 +1,184 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0e2a32; /* Fondo principal */
+    color: #b0c5ca; /* Texto base */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinea al inicio verticalmente */
+    min-height: 100vh; /* Ocupa al menos toda la altura de la vista */
+    box-sizing: border-box;
+}
+
+.page-container {
+    width: 100%;
+    max-width: 800px; /* Ancho máximo para el contenido */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* --- Encabezado principal (similar al anterior, con botones) --- */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 15px 0;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #2b4a4f; /* Línea separadora */
+}
+
+.main-header .left-buttons,
+.main-header .right-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.main-header .page-title h1 {
+    color: #ffffff; /* Texto actual */
+    font-size: 1.8em;
+    margin: 0;
+}
+
+.main-header .header-button {
+    padding: 8px 15px;
+    background-color: #0e2a32; /* Fondo principal */
+    color: #f6c177; /* Acento activo */
+    border: 1px solid #f6c177; /* Acento activo */
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.main-header .header-button:hover {
+    background-color: #f6c177; /* Acento activo */
+    color: #0e2a32; /* Fondo principal */
+}
+
+/* --- Contenido principal --- */
+.content-wrapper {
+    background-color: #0e2a32; /* Fondo principal */
+    border: 1px solid #2b4a4f; /* Líneas / bordes */
+    border-radius: 8px;
+    padding: 25px;
+}
+
+/* --- Sección de Resumen de Jugador --- */
+.user-stats-summary {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #2b4a4f; /* Línea separadora */
+}
+
+.user-stats-summary h2 {
+    color: #ffffff; /* Texto actual */
+    margin-bottom: 15px;
+    font-size: 1.6em;
+}
+
+.user-stats-summary .player-name {
+    color: #f6c177; /* Acento activo */
+}
+
+.user-stats-summary p {
+    font-size: 1.1em;
+    margin: 8px 0;
+    color: #b0c5ca; /* Texto base */
+}
+
+.user-stats-summary span {
+    font-weight: bold;
+    color: #c3e88d; /* Texto correcto (para resaltar los valores) */
+}
+
+/* --- Sección de Historial de Partidas --- */
+.match-history-section {
+    margin-top: 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h3 {
+    color: #ffffff; /* Texto actual */
+    margin: 0;
+    font-size: 1.4em;
+}
+
+.clear-history-button {
+    padding: 8px 15px;
+    background-color: #0e2a32; /* Fondo principal */
+    color: #f07178; /* Texto incorrecto (para una acción de borrado/peligro) */
+    border: 1px solid #f07178; /* Borde rojo */
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.clear-history-button:hover {
+    background-color: #f07178; /* Fondo rojo al pasar el ratón */
+    color: #ffffff; /* Texto blanco */
+}
+
+.match-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espacio entre cada elemento de partida */
+}
+
+.match-item {
+    background-color: #0e2a32; /* Fondo principal */
+    border: 1px solid #2b4a4f; /* Líneas / bordes */
+    border-radius: 6px;
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column; /* Apila detalles y fecha */
+    gap: 5px; /* Espacio entre las líneas de detalles */
+}
+
+.match-item .match-details {
+    display: flex;
+    justify-content: space-between; /* Espacia puntuación, wpm, precisión */
+    width: 100%;
+    font-size: 1.1em;
+    color: #b0c5ca; /* Texto base */
+}
+
+.match-item .match-score {
+    color: #c3e88d; /* Texto correcto */
+    font-weight: bold;
+}
+
+.match-item .match-wpm {
+    color: #f6c177; /* Acento activo */
+    font-weight: bold;
+}
+
+.match-item .match-accuracy {
+    color: #ffffff; /* Texto actual */
+    font-weight: bold;
+}
+
+.match-item .match-date {
+    font-size: 0.9em;
+    color: #b0c5ca; /* Texto base */
+    text-align: right;
+    margin-top: 5px; /* Espacio entre detalles y fecha */
+    border-top: 1px dashed #2b4a4f; /* Línea separadora tenue */
+    padding-top: 5px;
+}
+
+.no-matches-message {
+    text-align: center;
+    font-style: italic;
+    color: #b0c5ca; /* Texto base */
+    margin-top: 30px;
+}
