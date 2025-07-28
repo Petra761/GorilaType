@@ -14,6 +14,7 @@
         <a href="index.html">
             <img src="assets/logo.svg" alt="Logo del sitio" id="logo">
         </a>
+        <!-- Este DIV es el contenedor que JavaScript modificará al iniciar/cerrar sesión -->
         <div id="userAuth">
             <img src="assets/login.svg" alt="Iniciar Sesión" id="loginIcon">
             <span id="usernameDisplay">User</span>
@@ -24,14 +25,21 @@
     <div id="authModalContainer" class="modal-hidden">
         <div id="authModal">
             <img src="assets/logo.svg" alt="Logo" class="auth-logo"> 
+            
+            <!-- Pestañas para cambiar entre Login y Registro -->
             <div id="authTabs">
                 <button id="loginTab" class="auth-tab active">Iniciar Sesión</button>
                 <button id="registerTab" class="auth-tab">Registrarse</button>
             </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 594ae3b35bde33eec411e3f9d7240f049964cd45
             <!-- Formulario de Login -->
             <form id="loginForm">
                 <input type="text" placeholder="Nombre de usuario" class="auth-input">
                 <input type="password" placeholder="Contraseña" class="auth-input">
+<<<<<<< HEAD
                 <div id="loginError" class="auth-error"></div>
                 <button type="submit" class="auth-button">Iniciar Sesión</button>
             </form>
@@ -40,6 +48,17 @@
                 <input type="text" placeholder="Nombre de usuario" class="auth-input">
                 <input type="password" placeholder="Contraseña" class="auth-input">
                 <div id="registerError" class="auth-error"></div>
+=======
+                <div id="loginError" class="auth-error"></div> <!-- Div para errores de login -->
+                <button type="submit" class="auth-button">Iniciar Sesión</button>
+            </form>
+
+            <!-- Formulario de Registro (inicialmente oculto) -->
+            <form id="registerForm" style="display: none;">
+                <input type="text" placeholder="Nombre de usuario" class="auth-input">
+                <input type="password" placeholder="Contraseña" class="auth-input">
+                <div id="registerError" class="auth-error"></div> <!-- Div para errores de registro -->
+>>>>>>> 594ae3b35bde33eec411e3f9d7240f049964cd45
                 <button type="submit" class="auth-button">Registrarse</button>
             </form>
         </div>
@@ -47,6 +66,7 @@
 
     <!-- =========== CONTENEDOR DEL JUEGO =========== -->
     <div id="gameContainer">
+        <!-- Barra de opciones del juego -->
         <div id="optionBar">
             <div class="optionGroup selectWrapper">
                 <select id="languageSelect">
@@ -75,6 +95,11 @@
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
+=======
+
+        <!-- Progreso y área de tipeo -->
+>>>>>>> 594ae3b35bde33eec411e3f9d7240f049964cd45
         <div id="gameProgress"></div>
         <div id="typingContainer"></div>
         <span id="restartButton">Reiniciar</span>
@@ -88,8 +113,12 @@
         </a>
     </footer>
 
+<<<<<<< HEAD
     <!-- =========== SCRIPTS (ORDEN CORRECTO) =========== -->
     <!-- app.js DEBE ir PRIMERO para crear el objeto 'game' -->
+=======
+    <!-- =========== SCRIPTS =========== -->
+>>>>>>> 594ae3b35bde33eec411e3f9d7240f049964cd45
     <script src="js/app.js"></script>
     
     <!-- ui.js va DESPUÉS para que pueda usar el objeto 'game' -->
