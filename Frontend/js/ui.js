@@ -22,13 +22,29 @@ document.addEventListener('DOMContentLoaded', () => {
     let gameConfig = { mode: 'words', value: 15, language: 'en' };
     
     const setupLoggedInUI = (username) => {
-        userAuth.innerHTML = `<span id="usernameDisplay">${username}</span><img src="assets/logout.svg" alt="Cerrar Sesión" id="logoutIcon" title="Cerrar Sesión" style="width: 45px; cursor: pointer; filter: invert(85%) sepia(9%) saturate(466%) hue-rotate(145deg) brightness(85%) contrast(88%);">`;
-        authModalContainer.classList.add('modal-hidden');
-        document.getElementById('logoutIcon').addEventListener('click', () => {
-            sessionStorage.removeItem('loggedInUser');
-            window.location.reload();
-        });
-    };
+    // El nombre de usuario ahora es un enlace a la página de historial
+    userAuth.innerHTML = `
+        <a href="historial.html" id="historyLink" title="Ver mi historial">
+            <span id="usernameDisplay">${username}</span>
+        </a>
+        <img src="assets/logout.svg" alt="Cerrar Sesión" id="logoutIcon" title="Cerrar Sesión">
+    `;
+
+    // Estilos para el nuevo enlace y el icono de logout
+    const historyLink = document.getElementById('historyLink');
+    historyLink.style.textDecoration = 'none';
+
+    const logoutIcon = document.getElementById('logoutIcon');
+    logoutIcon.style.width = '45px';
+    logoutIcon.style.cursor = 'pointer';
+    logoutIcon.style.filter = 'invert(85%) sepia(9%) saturate(466%) hue-rotate(145deg) brightness(85%) contrast(88%)';
+    
+    // Evento para cerrar sesión
+    logoutIcon.addEventListener('click', () => {
+        sessionStorage.removeItem('loggedInUser');
+        window.location.reload(); // Recarga la página para restaurar la vista de "login"
+    });
+};
 
     const loggedInUser = sessionStorage.getItem('loggedInUser');
     if (loggedInUser) {

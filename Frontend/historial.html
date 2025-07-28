@@ -1,80 +1,66 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historial de Partidas - TypeMaster</title>
+    <title>Historial - GorilaType</title>
+    <!-- Enlazamos a una nueva hoja de estilos específica para esta página -->
     <link rel="stylesheet" href="styles/historial.css">
-    </head>
+    <link rel="icon" type="image/svg+xml" href="assets/miniatura.svg">
+</head>
 <body>
-    <div class="page-container">
-        <header class="main-header">
-            <div class="left-buttons">
-                <button class="header-button">MENU</button>
-            </div>
-            <div class="page-title">
-                <h1>Historial de Partidas</h1>
-            </div>
-            <div class="right-buttons">
-                <button class="header-button">INFO</button>
-                <button class="header-button">AYUDA</button>
-            </div>
-        </header>
 
-        <div class="content-wrapper">
-            <div class="user-stats-summary">
-                <h2>Resumen de Jugador: <span class="player-name">Jugador123</span></h2>
-                <p>Total Partidas: <span id="totalPartidas">50</span></p>
-                <p>WPM Promedio: <span id="wpmPromedio">72</span></p>
-                <p>Precisión Promedio: <span id="precisionPromedio">95%</span></p>
-            </div>
+    <!-- =========== ENCABEZADO =========== -->
+    <header id="mainHeader">
+        <a href="index.html" title="Volver al juego">
+            <img src="assets/logo.svg" alt="Logo del sitio" id="logo">
+        </a>
+    </header>
 
-            <div class="match-history-section">
-                <div class="section-header">
-                    <h3>Mis Partidas Recientes</h3>
-                    <button class="clear-history-button">Borrar Historial</button>
+    <!-- =========== CONTENIDO PRINCIPAL =========== -->
+    <div class="content-wrapper">
+        <div class="user-stats-summary">
+            <h1>Historial de <span id="playerName" class="highlight">...</span></h1>
+            <div class="summary-grid">
+                <div>
+                    <p>Total Partidas</p>
+                    <span id="totalPartidas" class="stat-value">0</span>
                 </div>
-
-                <div class="match-list">
-                    <div class="match-item">
-                        <div class="match-details">
-                            <span class="match-score">CPM: 1234</span>
-                            <span class="match-wpm">WPM: 75</span>
-                            <span class="match-accuracy">Precisión: 98%</span>
-                        </div>
-                        <div class="match-date">Fecha: 2025-07-27 14:30</div>
-                    </div>
-
-                    <div class="match-item">
-                        <div class="match-details">
-                            <span class="match-score">CPM: 1190</span>
-                            <span class="match-wpm">WPM: 72</span>
-                            <span class="match-accuracy">Precisión: 96%</span>
-                        </div>
-                        <div class="match-date">Fecha: 2025-07-26 18:05</div>
-                    </div>
-
-                    <div class="match-item">
-                        <div class="match-details">
-                            <span class="match-score">CPM: 1300</span>
-                            <span class="match-wpm">WPM: 80</span>
-                            <span class="match-accuracy">Precisión: 99%</span>
-                        </div>
-                        <div class="match-date">Fecha: 2025-07-25 10:15</div>
-                    </div>
-
-                    <div class="match-item">
-                        <div class="match-details">
-                            <span class="match-score">CPM: 1050</span>
-                            <span class="match-wpm">WPM: 65</span>
-                            <span class="match-accuracy">Precisión: 92%</span>
-                        </div>
-                        <div class="match-date">Fecha: 2025-07-24 20:00</div>
-                    </div>
-
-                    <p class="no-matches-message" style="display: none;">Aún no tienes partidas registradas.</p>
+                <div>
+                    <p>WPM Promedio</p>
+                    <span id="wpmPromedio" class="stat-value">0</span>
+                </div>
+                <div>
+                    <p>Precisión Media</p>
+                    <span id="precisionPromedio" class="stat-value">0%</span>
                 </div>
             </div>
         </div>
+
+        <div class="match-history-section">
+            <div class="section-header">
+                <h3>Mis Partidas Recientes</h3>
+                <a href="index.html" class="action-button">Jugar de Nuevo</a>
+            </div>
+
+            <div id="matchList" class="match-list">
+                <!-- Las partidas se insertarán aquí dinámicamente con JavaScript -->
+            </div>
+            <p id="noMatchesMessage" class="no-matches-message" style="display: none;">
+                Aún no tienes partidas registradas. ¡Juega una para verla aquí!
+            </p>
+        </div>
     </div>
+
+    <!-- =========== PIE DE PÁGINA =========== -->
+    <footer id="mainFooter">
+        <a href="https://github.com" target="_blank" class="footer-link">
+            <img src="assets/github.svg" alt="GitHub" class="footer-icon">
+            <span>GitHub</span>
+        </a>
+    </footer>
+
+    <script src="js/historial.js"></script>
+
 </body>
 </html>

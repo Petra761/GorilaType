@@ -1,0 +1,174 @@
+:root {
+--main-bg: #0e2a32;
+--secondary-bg: #2b4a4f;
+--container-border: #3a5f66;
+--text-color: #b0c5ca;
+--highlight-color: #f6c177;
+--correct-color: #c3e88d;
+--font-family: 'Cascadia Code', monospace;
+}
+body {
+background-color: var(--main-bg);
+color: var(--text-color);
+font-family: var(--font-family);
+display: flex;
+flex-direction: column;
+align-items: center;
+min-height: 100vh;
+margin: 0;
+padding: 100px 20px 20px 20px; 
+box-sizing: border-box;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+
+#mainHeader {
+width: 90vw;
+max-width: 80%;
+display: flex;
+justify-content: space-between;
+align-items: center;
+position: absolute;
+top: 20px;
+left: 50%;
+transform: translateX(-50%);
+}
+#logo {
+width: 100px;
+filter: invert(80%) sepia(27%) saturate(2137%) hue-rotate(328deg) brightness(98%) contrast(96%);
+}
+#mainFooter {
+margin-top: 50px;
+width: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.footer-link {
+display: flex;
+align-items: center;
+gap: 10px;
+text-decoration: none;
+color: var(--text-color);
+}
+.footer-icon {
+width: 30px;
+filter: invert(85%) sepia(9%) saturate(466%) hue-rotate(145deg) brightness(85%) contrast(88%);
+}
+.content-wrapper {
+width: 100%;
+max-width: 900px;
+display: flex;
+flex-direction: column;
+gap: 40px;
+}
+.highlight {
+color: var(--highlight-color);
+}
+.user-stats-summary {
+background-color: var(--secondary-bg);
+padding: 25px 30px;
+border-radius: 8px;
+border: 1px solid var(--container-border);
+}
+.user-stats-summary h1 {
+margin: 0 0 25px 0;
+font-size: 1.8em;
+font-weight: normal;
+text-align: center;
+}
+.summary-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+gap: 20px;
+text-align: center;
+}
+.summary-grid p {
+margin: 0 0 8px 0;
+font-size: 1em;
+}
+.stat-value {
+font-size: 2.2em;
+font-weight: bold;
+color: var(--highlight-color);
+}
+/* --- Sección de Historial de Partidas --- */
+.match-history-section {
+background-color: rgba(43, 74, 79, 0.5);
+padding: 25px 30px;
+border-radius: 8px;
+}
+.section-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+border-bottom: 1px solid var(--container-border);
+padding-bottom: 15px;
+}
+.section-header h3 {
+margin: 0;
+font-size: 1.4em;
+font-weight: normal;
+}
+.action-button {
+background-color: transparent;
+border: 1px solid var(--highlight-color);
+color: var(--highlight-color);
+padding: 8px 15px;
+border-radius: 5px;
+cursor: pointer;
+font-family: inherit;
+font-size: 0.9em;
+text-decoration: none;
+transition: background-color 0.2s, color 0.2s;
+}
+.action-button:hover {
+background-color: var(--highlight-color);
+color: var(--main-bg);
+}
+/* --- Lista de Partidas Individuales --- */
+.match-list {
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+.match-item {
+background-color: var(--main-bg);
+padding: 15px 20px;
+border-radius: 6px;
+display: flex;
+flex-wrap: wrap;
+justify-content: space-between;
+align-items: center;
+gap: 15px;
+border-left: 4px solid var(--highlight-color);
+transition: background-color 0.2s;
+}
+.match-item:hover {
+background-color: #1a3841;
+}
+.match-details {
+display: flex;
+gap: 25px;
+flex-wrap: wrap;
+align-items: center;
+}
+.match-details span {
+font-size: 1.1em;
+font-weight: bold;
+}
+.match-wpm { color: var(--correct-color); }
+.match-cpm { color: #82aaff; } 
+.match-accuracy { color: var(--text-color); font-weight: normal; }
+.match-date {
+font-size: 0.9em;
+color: rgba(176, 197, 202, 0.7);
+}
+.no-matches-message {
+text-align: center;
+padding: 40px 20px;
+color: rgba(176, 197, 202, 0.8);
+background-color: rgba(14, 42, 50, 0.5);
+border-radius: 6px;
+}
