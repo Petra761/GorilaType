@@ -1,21 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GorilaType</title>
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="icon" type="imagen/svg+xml" href="assets/miniatura.svg">
+    <link rel="icon" type="image/svg+xml" href="assets/miniatura.svg">
 </head>
 <body>
+
+    <!-- =========== ENCABEZADO =========== -->
     <header id="mainHeader">
         <a href="index.html">
             <img src="assets/logo.svg" alt="Logo del sitio" id="logo">
         </a>
         <div id="userAuth">
             <img src="assets/login.svg" alt="Iniciar Sesión" id="loginIcon">
+            <span id="usernameDisplay">User</span>
         </div>
     </header>
+
+    <!-- =========== MODAL DE AUTENTICACIÓN =========== -->
     <div id="authModalContainer" class="modal-hidden">
         <div id="authModal">
             <img src="assets/logo.svg" alt="Logo" class="auth-logo"> 
@@ -23,18 +28,24 @@
                 <button id="loginTab" class="auth-tab active">Iniciar Sesión</button>
                 <button id="registerTab" class="auth-tab">Registrarse</button>
             </div>
+            <!-- Formulario de Login -->
             <form id="loginForm">
                 <input type="text" placeholder="Nombre de usuario" class="auth-input">
                 <input type="password" placeholder="Contraseña" class="auth-input">
+                <div id="loginError" class="auth-error"></div>
                 <button type="submit" class="auth-button">Iniciar Sesión</button>
             </form>
+            <!-- Formulario de Registro -->
             <form id="registerForm" style="display: none;">
                 <input type="text" placeholder="Nombre de usuario" class="auth-input">
                 <input type="password" placeholder="Contraseña" class="auth-input">
+                <div id="registerError" class="auth-error"></div>
                 <button type="submit" class="auth-button">Registrarse</button>
             </form>
         </div>
     </div>
+
+    <!-- =========== CONTENEDOR DEL JUEGO =========== -->
     <div id="gameContainer">
         <div id="optionBar">
             <div class="optionGroup selectWrapper">
@@ -43,16 +54,14 @@
                     <option value="es">Español</option>
                 </select>
             </div>
-
-            <div id="optionGroup">
+            <div class="optionGroup">
                 <div>
                     <button class="modeSwitch" data-mode="words">Words</button>
-                    <button class="modeSwitch" data-mode="Time">Time</button>
+                    <button class="modeSwitch" data-mode="time">Time</button>
                 </div>
             </div>
-
             <div id="dynamicOptions">
-                <div id="wordOptions">
+                <div id="wordOptions" style="display: flex;">
                     <button class="wordCount" data-words="15">15</button>
                     <button class="wordCount" data-words="30">30</button>
                     <button class="wordCount" data-words="50">50</button>
@@ -66,18 +75,25 @@
                 </div>
             </div>
         </div>
-
         <div id="gameProgress"></div>
         <div id="typingContainer"></div>
         <span id="restartButton">Reiniciar</span>
     </div>
+
+    <!-- =========== PIE DE PÁGINA =========== -->
     <footer id="mainFooter">
-        <a href="#" target="_blank" class="footer-link">
+        <a href="https://github.com" target="_blank" class="footer-link"> <!-- Añadido un enlace real -->
             <img src="assets/github.svg" alt="GitHub" class="footer-icon">
             <span>GitHub</span>
         </a>
     </footer>
+
+    <!-- =========== SCRIPTS (ORDEN CORRECTO) =========== -->
+    <!-- app.js DEBE ir PRIMERO para crear el objeto 'game' -->
     <script src="js/app.js"></script>
+    
+    <!-- ui.js va DESPUÉS para que pueda usar el objeto 'game' -->
     <script src="js/ui.js"></script>
+
 </body>
 </html>

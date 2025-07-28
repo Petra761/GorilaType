@@ -29,15 +29,31 @@ body {
     filter: invert(80%) sepia(27%) saturate(2137%) hue-rotate(328deg) brightness(98%) contrast(96%);
 }
 
+#userAuth {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
 #loginIcon {
     width: 45px;
-    cursor: pointer;
     filter: invert(85%) sepia(9%) saturate(466%) hue-rotate(145deg) brightness(85%) contrast(88%);
     transition: filter 0.2s ease-in-out;
 }
 
-#loginIcon:hover {
+#usernameDisplay {
+    color: #b0c5ca;
+    font-size: 1.1em;
+    transition: color 0.2s ease-in-out;
+}
+
+#userAuth:hover #loginIcon {
     filter: invert(80%) sepia(27%) saturate(2137%) hue-rotate(328deg) brightness(98%) contrast(96%);
+}
+
+#userAuth:hover #usernameDisplay {
+    color: #f6c177;
 }
 
 
@@ -317,7 +333,7 @@ body {
 
 #restartButton:hover {
     background-color: #f6c177;
-    color: #0e2a32;
+    color: #0e322a;
     border-color: #f6c177;
 }
 
