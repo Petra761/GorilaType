@@ -218,7 +218,7 @@ class Game {
                 cpm: results.cpm,
                 accuracy: parseFloat(results.accuracy)
             };
-            this.saveGameDataToServer(gameData);
+            this.saveGameDataToServer(gameData); // Llamada a la función de guardado
         }
 
         localStorage.setItem('typingTestResults', JSON.stringify(results));
@@ -226,25 +226,25 @@ class Game {
     }
 
     async saveGameDataToServer(gameData) {
-        console.log("Intentando guardar los datos del juego:", gameData);
-        try {
-            const url = '/GorilaType/backend/partida/save-game.php';
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(gameData)
-            });
-            if (response.ok) {
-                const result = await response.json();
-                console.log("Respuesta del servidor:", result.message);
-            } else {
-                const errorResult = await response.json();
-                console.error("Error al guardar la partida:", errorResult.error);
-            }
-        } catch (error) {
-            console.error("Error de red al intentar guardar la partida:", error);
+    console.log("Intentando guardar los datos del juego:", gameData);
+    try {
+        const url = '/GorilaType/backend/partida/save-game.php';
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(gameData)
+        });
+        if (response.ok) {
+            const result = await response.json();
+            console.log("Respuesta del servidor:", result.message);
+        } else {
+            const errorResult = await response.json();
+            console.error("Error al guardar la partida:", errorResult.error);
         }
+    } catch (error) {
+        console.error("Error de red al intentar guardar la partida:", error);
     }
+}
     
     async restartGame() {
         console.log("Reiniciando el juego con la nueva configuración...");
