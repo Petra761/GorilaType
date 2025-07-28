@@ -1,11 +1,8 @@
+
 console.log("Script app.js loaded");
 
 class Game {
-    // ... (Todo el contenido de la clase Game que ya tienes está bien)
-    // PEGA AQUÍ TODO EL CÓDIGO DE LA CLASE 'Game' DE TU ARCHIVO,
-    // INCLUYENDO LA FUNCIÓN 'calculateAndStoreResults' COMPLETA
-    // CON LA LÓGICA DE GUARDADO. La versión que te di anteriormente es la correcta.
-    // Para ser claros, la pegaré de nuevo aquí debajo.
+
     
     constructor(config) {
         this.typingContainer = document.getElementById("typingContainer");
@@ -286,10 +283,91 @@ class Game {
         }
     }
     
-    // El resto de funciones auxiliares que no cambian
-    moveToPreviousWord() { /* ... */ }
-    handleScroll(direction) { /* ... */ }
-    isCorrectWord(wordElement) { /* ... */ }
+    moveToPreviousWord() {
+        const words = document.querySelectorAll('.word');
+        
+        if (this.currentWordIndex <= 0) return;
+
+        const previousWordElement = words[this.currentWordIndex - 1];
+
+        if (this.isCorrectWord(previousWordElement)) {
+            return; 
+        }
+
+        this.handleScroll('previous');
+        words[this.currentWordIndex].classList.remove('wordActive');
+        
+        this.currentWordIndex--;
+
+        const newActiveWord = words[this.currentWordIndex];
+        newActiveWord.classList.add('wordActive');
+
+        this.charIndex = newActiveWord.querySelectorAll('.letter').length;
+        
+        this.updateCursor();
+        if (this.gameMode === 'words') {
+        this.UpdateProgressDisplay();
+        }
+    }
+
+    handleScroll(direction) {
+        const words = this.wordsWrapper.querySelectorAll('.word');
+        const currentWordEl = words[this.currentWordIndex];
+        
+        if (direction === 'next') {
+            if (this.currentWordIndex === 0) return;
+            
+            const prevWordEl = words[this.currentWordIndex - 1];
+            
+            if (currentWordEl.offsetTop > prevWordEl.offsetTop) {
+                this.currentLine++;
+            }
+            
+            if (this.currentLine > 2) {
+                const scrollAmount = currentWordEl.offsetTop - prevWordEl.offsetTop;
+                this.scrollOffset += scrollAmount;
+                this.wordsWrapper.style.transform = `translateY(-${this.scrollOffset}px)`;  
+                this.currentLine--; 
+            }
+        } 
+        else if (direction === 'previous') {
+            const nextWordEl = words[this.currentWordIndex];
+            const newActiveWordEl = words[this.currentWordIndex - 1];
+            
+            if (newActiveWordEl.offsetTop < nextWordEl.offsetTop) {
+                
+                if (this.currentLine === 2 && this.scrollOffset > 0) {
+                    const scrollAmount = nextWordEl.offsetTop - newActiveWordEl.offsetTop;
+                    this.scrollOffset -= scrollAmount;
+                    
+                    this.scrollOffset = Math.max(0, this.scrollOffset); 
+                    
+                    this.wordsWrapper.style.transform = `translateY(-${this.scrollOffset}px)`;
+                    this.currentLine++; 
+                }
+                
+                this.currentLine--;
+            }
+        }
+    }
+    isCorrectWord(wordElement) {
+        if (!wordElement) return false;
+
+        if (wordElement.querySelector('.extra')) {
+            return false;
+        }
+
+        const letters = wordElement.querySelectorAll('.letter');
+        
+        for (const letter of letters) {
+
+            if (letter.classList.contains('incorrect') || !letter.classList.contains('correct')) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
 
 const initialConfig = {
@@ -299,8 +377,6 @@ const initialConfig = {
 };
 let game = new Game(initialConfig);
 
-// LA LÍNEA MÁGICA QUE ARREGLA TODO:
-// Hacemos que la instancia 'game' sea accesible globalmente.
 window.game = game;
 
 const restartButton = document.getElementById('restartButton');
