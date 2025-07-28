@@ -1,0 +1,116 @@
+/* --- General Body Styles --- */
+
+/* --- Main Content Container --- */
+.v_body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    width: 100%;
+}
+
+.container {
+    width: 90%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+/* --- Statistics Box --- */
+.stats-box {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    background-color: #2b4a4f;
+    padding: 30px 20px;
+    border-radius: 8px;
+    gap: 20px;
+}
+
+.stat-item {
+    text-align: center;
+    flex: 1;
+}
+
+.label {
+    font-size: 1.2em;
+    color: #b0c5ca;
+    margin-bottom: 10px;
+}
+
+.value {
+    font-size: 3em;
+    font-weight: bold;
+    color: #f6c177;
+}
+
+.percentage {
+    font-size: 2.5em; /* Ligeramente más pequeño para mejor ajuste */
+}
+
+
+/* --- Start Button --- */
+.start-button-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.start-button {
+    background-color: #f6c177;
+    color: #0e2a32;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.start-button:hover {
+    background-color: #f8d298;
+}
+
+/* --- Footer Styles --- */
+#mainFooter {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #b0c5ca;
+    transition: color 0.2s ease-in-out;
+}
+
+.footer-icon {
+    width: 30px;
+    height: 30px;
+    filter: invert(85%) sepia(9%) saturate(466%) hue-rotate(145deg) brightness(85%) contrast(88%);
+    transition: filter 0.2s ease-in-out;
+}
+
+.footer-link:hover .footer-icon {
+    filter: invert(80%) sepia(27%) saturate(2137%) hue-rotate(328deg) brightness(98%) contrast(96%);
+}
+
+.footer-link:hover span {
+    color: #f6c177;
+}
+
+.footer-link span {
+    font-size: 1.1em;
+    transition: color 0.2s ease-in-out;
+}

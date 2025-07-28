@@ -1,5 +1,45 @@
 document.addEventListener('DOMContentLoaded',() => {
 
+
+
+// --- Auth Modal Logic ---
+    const authLink = document.getElementById('authLink');
+    const authModalContainer = document.getElementById('authModalContainer');
+    const authModal = document.getElementById('authModal');
+    
+    const loginTab = document.getElementById('loginTab');
+    const registerTab = document.getElementById('registerTab');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+
+    loginIcon.addEventListener('click', () => {
+        authModalContainer.classList.remove('modal-hidden');
+    });
+
+    authModalContainer.addEventListener('click', (e) => {
+        if (e.target === authModalContainer) {
+            authModalContainer.classList.add('modal-hidden');
+        }
+    });
+
+    loginTab.addEventListener('click', () => {
+        loginTab.classList.add('active');
+        registerTab.classList.remove('active');
+        loginForm.style.display = 'flex';
+        registerForm.style.display = 'none';
+    });
+
+    registerTab.addEventListener('click', () => {
+        registerTab.classList.add('active');
+        loginTab.classList.remove('active');
+        registerForm.style.display = 'flex';
+        loginForm.style.display = 'none';
+    });
+
+
+
+
+
     const languageSelect = document.getElementById('languageSelect');
     const modeSwitches = document.querySelectorAll('.modeSwitch');
     const wordOptionsContainer = document.getElementById('wordOptions');

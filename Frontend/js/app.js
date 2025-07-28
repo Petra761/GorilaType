@@ -143,7 +143,7 @@ class Game {
 
         document.querySelectorAll(".cursor").forEach(cursor => cursor.classList.remove('cursor'));
         console.log("Game ended");
-        this.results();
+        this.calculateAndStoreResults();
     }
 
     handleTyping(e) {
@@ -306,27 +306,38 @@ class Game {
         }
     }
 
-    results () {
+    calculateAndStoreResults() {
         let timeElapsedInMinutes;
 
         if (this.gameMode === 'time') {
             timeElapsedInMinutes = this.duration / 60;
-        } else if(this.gameMode === 'words') {
-            const timeelapsedInSeconds = (this.endTime - this.startTime) / 1000;
-            timeElapsedInMinutes = timeelapsedInSeconds / 60;
+        } else if (this.gameMode === 'words') {
+            const timeElapsedInSeconds = (this.endTime - this.startTime) / 1000;
+            timeElapsedInMinutes = timeElapsedInSeconds / 60;
         }
 
-        if(timeElapsedInMinutes <= 0){
-            console.log("No se ha completado suficiente tiempo texto para calcular el resultado.");
+        if (timeElapsedInMinutes <= 0) {
+            console.log("No se ha completado suficiente tiempo o texto para calcular el resultado.");
+            // Opcional: Redirigir igualmente o mostrar un mensaje.
+            // Por ahora, no haremos nada si no hay tiempo transcurrido.
+            return;
         }
 
-        const wpm = (this.correctChars / 5) / timeElapsedInMinutes;
-        const cpm = this.correctChars / timeElapsedInMinutes;
-        const accuracy = this.totalChars > 0 ? ((this.correctChars / this.totalChars) * 100).toFixed(2) : 0;
+        const wpm = Math.round((this.correctChars / 5) / timeElapsedInMinutes) || 0;
+        const cpm = Math.round(this.correctChars / timeElapsedInMinutes) || 0;
+        const accuracy = this.totalChars > 0 ? ((this.correctChars / this.totalChars) * 100).toFixed(2) : "0.00";
     
-        console.log(`WPM: ${wpm.toFixed(2)}`);
-        console.log(`CPM: ${cpm.toFixed(2)}`);
-        console.log(`Accuracy: ${accuracy}%`);
+        const results = {
+            wpm: wpm,
+            cpm: cpm,
+            accuracy: accuracy
+        };
+
+        // Guardar en localStorage
+        localStorage.setItem('typingTestResults', JSON.stringify(results));
+
+        // Redirigir a la página de resultados
+        window.location.href = 'results.html';
     }
 
     async restartGame() {
