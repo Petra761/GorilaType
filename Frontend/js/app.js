@@ -393,25 +393,14 @@ class Game {
     }
 }
 
-const game1 = {
-    mode: 'time',
-    value: 60,
-    language: 'en'
-}
-
-const game2 = {
+const initialConfig = {
     mode: 'words',
-    value: 10,
-    language: 'es'
-}
+    value: 15,
+    language: 'en'
+};
 
-const game = new Game(game1);
+let game = new Game(initialConfig);
 
-game.init().then(() => {
-    document.addEventListener('keydown', (e) => {
-        game.handleTyping(e);
-    });
-});
 
 const restartButton = document.getElementById('restartButton');
 restartButton.addEventListener('click', () => {
