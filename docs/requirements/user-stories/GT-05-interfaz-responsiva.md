@@ -1,8 +1,8 @@
-# HU-17 – Interfaz Responsiva
+# GT-05 – Interfaz Responsiva
 
 > Adaptación de la interfaz a distintos tamaños de pantalla.
 
-**Última actualización:** 2026-07-29
+**Última actualización:** 2026-08-04
 **Autor(es):** Marcelo Llanos
 
 ---
@@ -17,7 +17,7 @@
 
 ## Detalles
 
-- **ID:** HU-17
+- **ID:** GT-05
 - **Tiempo estimado:** 2 días
 - **Story Points:** 5
 - **Prioridad:** Alta
