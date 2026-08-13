@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/GorilaType.Api/GorilaType.Api.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/GorilaType.Api.Tests/GorilaType.Api.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -3,7 +3,7 @@
 > Esquema de la base de datos de la app de test de mecanografía, normalizado hasta 3FN. Para desarrolladores del proyecto GorilaType.
 
 **Última actualización:** 2026-07-21
-**Autor(es):** <!-- TODO: completar -->
+**Autor(es):** marcelollanos456-lang
 
 ---
 

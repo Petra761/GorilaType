@@ -3,7 +3,7 @@
 > Define cómo se nombran los archivos, carpetas y recursos del proyecto GorilaType (backend en .NET, frontend en React). Este documento es distinto de `coding-standards.md`: ese habla de cómo se escribe el código (sintaxis, casing de clases/métodos/propiedades); este habla de cómo se nombran los archivos, carpetas y recursos que contienen ese código.
 
 **Última actualización:** 2026-07-16
-**Autor(es):** Equipo GorilaType
+**Autor(es):** Petra761
 
 ---
 
@@ -23,31 +23,33 @@ PlayerDto.cs            → contiene: public class PlayerDto
 
 ### 1.2 Carpetas
 
-> ⚠️ **Nota:** asumo una organización por capas básica (Controllers, Services, Repositories, Models). Si el backend sigue otra arquitectura (Clean Architecture con proyectos separados, Vertical Slice, etc.), avisame para ajustar esta sección.
+Un solo proyecto Web API (no Clean Architecture con proyectos separados), organizado en capas por carpeta:
 
 ```
 GorilaType.Api/
 ├── Controllers/
 ├── Services/
-│   └── Interfaces/
+│ └── Interfaces/
 ├── Repositories/
-│   └── Interfaces/
+│ └── Interfaces/
 ├── Models/
-│   ├── Entities/
-│   └── Dtos/
-└── Middlewares/
+│ ├── Entities/
+│ └── Dtos/
+├── Data/ → AppDbContext y configuración de EF Core
+├── Middleware/ → middlewares custom (singular, no "Middlewares")
+└── Extensions/ → métodos de extensión (ej. transformers de OpenAPI)
 ```
 
-- Carpetas en `PascalCase`, en inglés, en plural cuando agrupan varios elementos del mismo tipo (`Controllers`, `Services`, `Models`).
+- Carpetas en `PascalCase`, en inglés, en plural cuando agrupan varios elementos del mismo tipo (`Controllers`, `Services`, `Models`). `Data`, `Middleware` y `Extensions` van en singular por convención de .NET.
 
 ### 1.3 DTOs y modelos
 
-| Tipo | Sufijo | Ejemplo |
-|---|---|---|
-| Entidad de dominio | (sin sufijo) | `Player.cs` |
-| DTO de salida | `Dto` | `PlayerDto.cs` |
-| DTO de entrada / request | `Request` | `CreatePlayerRequest.cs` |
-| DTO de respuesta específica | `Response` | `LoginResponse.cs` |
+| Tipo                        | Sufijo       | Ejemplo                  |
+| --------------------------- | ------------ | ------------------------ |
+| Entidad de dominio          | (sin sufijo) | `Player.cs`              |
+| DTO de salida               | `Dto`        | `PlayerDto.cs`           |
+| DTO de entrada / request    | `Request`    | `CreatePlayerRequest.cs` |
+| DTO de respuesta específica | `Response`   | `LoginResponse.cs`       |
 
 ### 1.4 Endpoints / rutas de API
 
@@ -59,18 +61,14 @@ GET  /api/players/{id}
 POST /api/typing-tests
 ```
 
-### 1.5 Proyectos de la solución (`.csproj`)
+### 1.5 Proyectos de la solución (`.slnx`)
 
-- Formato: `GorilaType.<Capa>`
+Dos proyectos únicamente — no hay separación en capas como proyectos independientes:
 
 ```
-GorilaType.Api
-GorilaType.Application
-GorilaType.Domain
-GorilaType.Infrastructure
+GorilaType.Api            → la API en sí (todas las capas conviven acá, por carpeta)
+GorilaType.Api.Tests        → tests xUnit
 ```
-
-> ⚠️ Esto asume separación en capas como proyectos independientes. Si el backend es un único proyecto (`GorilaType.Api` solo), esta sección se simplifica o se elimina.
 
 ---
 
@@ -92,22 +90,33 @@ TypingTestScreen.tsx    → export default function TypingTestScreen()
 ```
 src/
 ├── components/
-│   └── PlayerCard/
-│       ├── PlayerCard.tsx
-│       └── PlayerCard.module.css
-├── pages/
-│   └── TypingTestPage.tsx
+│ ├── ui/ → componentes reutilizables (botones, inputs)
+│ │ └── Button/
+│ │ ├── Button.tsx
+│ │ ├── Button.stories.tsx
+│ │ └── Button.test.tsx
+│ └── layout/ → header, sidebar, wrappers de página
+├── features/ → lógica agrupada por feature
 ├── hooks/
-│   └── useTypingTest.ts
-├── services/
-│   └── playerService.ts
-├── contexts/
-│   └── AuthContext.tsx
-└── utils/
-    └── formatTime.ts
+│ └── useTheme.ts
+├── lib/ → clientes (supabase, fetcher de API)
+├── pages/
+│ └── Home/
+│ └── Home.tsx → una carpeta por página, mismo nombre que el archivo
+├── routes/
+│ └── index.tsx → definición de rutas
+├── services/ → llamadas a la API del backend
+├── store/
+│ └── theme/
+│ └── ThemeContext.tsx → un Context por subcarpeta, PascalCase
+├── styles/
+│ └── themes/
+│ ├── serika-dark.css → kebab-case, un archivo por tema
+│ └── chaos-theory.css
+└── types/
 ```
 
-- Carpetas en `camelCase` (`components`, `hooks`, `services`), salvo la subcarpeta de cada componente, que usa el mismo `PascalCase` que el componente (`PlayerCard/`).
+- Carpetas en `camelCase` (`components`, `hooks`, `services`), salvo la subcarpeta de cada componente/página/context, que usa `PascalCase` igual que el archivo principal que contiene (`Button/`, `Home/`, `theme/` es la excepción — ahí `theme` describe el dominio, no un tipo, por eso va en camelCase).
 
 ### 2.3 Hooks personalizados
 
@@ -127,15 +136,15 @@ playerService.ts
 authService.ts
 ```
 
-### 2.5 Estilos (CSS / CSS Modules)
+### 2.5 Estilos
 
-- Archivo: mismo nombre que el componente, sufijo `.module.css`.
-- Clases dentro del archivo: `kebab-case`.
+No usamos CSS Modules — los estilos van con clases utilitarias de Tailwind directo en el `className`, siempre con los tokens semánticos del tema (`bg-primary`, no `bg-blue-600`; ver [`coding-standards.md §12.2`](./coding-standards.md)).
 
-```css
-/* PlayerCard.module.css */
-.player-card { }
-.player-card-header { }
+Los únicos archivos `.css` del proyecto son los de tema, en `kebab-case`:
+
+```
+styles/themes/serika-dark.css
+styles/themes/chaos-theory.css
 ```
 
 ### 2.6 Assets (imágenes, íconos, fuentes)
@@ -176,15 +185,15 @@ appsettings.json
 
 ## 5. Resumen rápido
 
-| Elemento | Convención |
-|---|---|
-| Clase / interfaz C# y su archivo | `PascalCase.cs` |
-| Componente React y su archivo | `PascalCase.tsx` |
-| Carpeta de código (backend) | `PascalCase` |
-| Carpeta de código (frontend, excepto carpeta de componente) | `camelCase` |
-| Hook de React | `useCamelCase.ts` |
-| Servicio (frontend o backend) | `camelCase` / `PascalCase` + `Service` |
-| Endpoint de API | `kebab-case`, plural |
-| Clase CSS | `kebab-case` |
-| Asset (imagen, ícono) | `kebab-case` |
-| Variable de entorno | `UPPER_SNAKE_CASE` |
+| Elemento                                                    | Convención                             |
+| ----------------------------------------------------------- | -------------------------------------- |
+| Clase / interfaz C# y su archivo                            | `PascalCase.cs`                        |
+| Componente React y su archivo                               | `PascalCase.tsx`                       |
+| Carpeta de código (backend)                                 | `PascalCase`                           |
+| Carpeta de código (frontend, excepto carpeta de componente) | `camelCase`                            |
+| Hook de React                                               | `useCamelCase.ts`                      |
+| Servicio (frontend o backend)                               | `camelCase` / `PascalCase` + `Service` |
+| Endpoint de API                                             | `kebab-case`, plural                   |
+| Clase CSS                                                   | `kebab-case`                           |
+| Asset (imagen, ícono)                                       | `kebab-case`                           |
+| Variable de entorno                                         | `UPPER_SNAKE_CASE`                     |
