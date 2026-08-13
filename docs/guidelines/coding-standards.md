@@ -2,25 +2,25 @@
 
 > Define cómo se debe escribir código C# en GorilaType: convenciones de nombres, estilo y reglas para evitar warnings del compilador. Aplica a todo el código nuevo del proyecto.
 
-**Última actualización:** 2026-07-16
-**Autor(es):** Equipo GorilaType
+**Última actualización:** 2026-08-13
+**Autor(es):** Petra761
 
 ---
 
 ## 1. Convención general de nombres
 
-| Elemento | Convención | Ejemplo |
-|---|---|---|
-| Clases | `PascalCase` | `PlayerController` |
-| Interfaces | `I` + `PascalCase` | `IPlayerService` |
-| Propiedades (atributos públicos) | `PascalCase` | `PlayerName` |
-| Métodos | `PascalCase` | `CalculateScore()` |
-| Campos privados | `_camelCase` (prefijo `_`) | `_playerName` |
-| Variables locales | `camelCase` | `totalScore` |
-| Parámetros de método | `camelCase` | `playerId` |
-| Constantes | `PascalCase` | `MaxPlayers` |
-| Enums (tipo y valores) | `PascalCase` | `GameState { Idle, Running, Paused }` |
-| Namespaces | `PascalCase` | `GorilaType.Core` |
+| Elemento                         | Convención                 | Ejemplo                               |
+| -------------------------------- | -------------------------- | ------------------------------------- |
+| Clases                           | `PascalCase`               | `PlayerController`                    |
+| Interfaces                       | `I` + `PascalCase`         | `IPlayerService`                      |
+| Propiedades (atributos públicos) | `PascalCase`               | `PlayerName`                          |
+| Métodos                          | `PascalCase`               | `CalculateScore()`                    |
+| Campos privados                  | `_camelCase` (prefijo `_`) | `_playerName`                         |
+| Variables locales                | `camelCase`                | `totalScore`                          |
+| Parámetros de método             | `camelCase`                | `playerId`                            |
+| Constantes                       | `PascalCase`               | `MaxPlayers`                          |
+| Enums (tipo y valores)           | `PascalCase`               | `GameState { Idle, Running, Paused }` |
+| Namespaces                       | `PascalCase`               | `GorilaType.Core`                     |
 
 > ⚠️ **Nota:** el prefijo `_camelCase` para campos privados es la convención estándar de Microsoft, pero no la mencionaste explícitamente. Si el equipo prefiere otra (por ejemplo `camelCase` sin guion bajo), avisame y lo actualizo.
 
@@ -69,15 +69,15 @@ El proyecto usa **nullable reference types** habilitado, por lo tanto toda propi
 
 Regla: **toda propiedad se inicializa según su tipo**, aunque el valor por defecto del tipo ya sea ese (para dejar la intención explícita y evitar el warning).
 
-| Tipo | Valor por defecto a usar |
-|---|---|
-| `string` | `= string.Empty;` |
-| `int` | `= 0;` |
-| `float` / `double` | `= 0f;` / `= 0d;` |
-| `bool` | `= false;` |
-| `List<T>` | `= new List<T>();` |
+| Tipo                      | Valor por defecto a usar                                            |
+| ------------------------- | ------------------------------------------------------------------- |
+| `string`                  | `= string.Empty;`                                                   |
+| `int`                     | `= 0;`                                                              |
+| `float` / `double`        | `= 0f;` / `= 0d;`                                                   |
+| `bool`                    | `= false;`                                                          |
+| `List<T>`                 | `= new List<T>();`                                                  |
 | `T?` (nullable explícito) | `= null;` (permitido solo si el campo es intencionalmente opcional) |
-| Clases propias | `= new NombreClase();` o `= null!;` si se inicializa en constructor |
+| Clases propias            | `= new NombreClase();` o `= null!;` si se inicializa en constructor |
 
 ```csharp
 public class GameSession
@@ -184,3 +184,60 @@ public class Player
     }
 }
 ```
+
+---
+
+## 11. Arquitectura del backend (reglas rápidas)
+
+Flujo completo y diagramas → [`docs/architecture/backend-architecture.md`](../architecture/backend-architecture.md). Acá solo las reglas obligatorias:
+
+- Un `Controller` nunca accede a `AppDbContext` directo — siempre pasa por un `Service`.
+- Un `Service` nunca arma queries de EF Core directo — siempre pasa por un `Repository`.
+- Toda clase de `Services/` y `Repositories/` se registra en `Program.cs` contra su interfaz (`IPlayerService`, no `PlayerService`), inyectada por constructor.
+- Ningún secreto (connection string, `Jwt:Key`) va en `appsettings.json` — siempre en `.env` (ver `appsettings.Example.json` como referencia de qué claves existen).
+- Todo endpoint que requiera un usuario logueado lleva `[Authorize]`. Los públicos (login, registro) se marcan explícitamente con un comentario `// Público a propósito`.
+
+---
+
+## 12. Frontend (React + TypeScript)
+
+> Convenciones de nombres de archivos/carpetas → [`docs/guidelines/naming-conventions.md`](./naming-conventions.md). Acá van las reglas de cómo se escribe el código en sí.
+
+### 12.1 Componentes
+
+- Siempre funcionales (no hay clases). Tipado explícito de props con `interface`, nunca `any`.
+- Cada componente de `components/ui/` se crea como trío: `Componente.tsx` + `Componente.stories.tsx` + `Componente.test.tsx` — ningún componente nuevo se commitea sin sus tres archivos.
+
+```tsx
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "primary" | "secondary";
+}
+
+export function Button({ variant = "primary", ...props }: ButtonProps) {
+  // ...
+}
+```
+
+### 12.2 Colores: siempre semánticos, nunca fijos
+
+Un componente **nunca** usa un color literal de Tailwind (`bg-blue-600`, `text-gray-900`). Siempre usa las clases semánticas que mapean a la variable del tema activo:
+
+```tsx
+// ❌ Evitar — no cambia con el tema
+<button className="bg-blue-600 text-white">
+
+// ✅ Correcto — se adapta al tema activo
+<button className="bg-primary text-background">
+```
+
+Colores disponibles: `background`, `background-alt`, `foreground`, `primary`, `muted`, `error`, `error-strong`. Cómo agregar un tema nuevo → [`docs/architecture/frontend-architecture.md`](../architecture/frontend-architecture.md).
+
+### 12.3 Imports
+
+- El alias `@/` para todo lo que esté dentro de `src/` (`@/components/...`, nunca `../../components/...`).
+- Orden: librerías externas primero, luego internas (`@/...`), luego relativas (`./`) — con una línea en blanco entre cada grupo.
+
+### 12.4 Hooks
+
+- Un hook custom = un archivo en `src/hooks/`, nombre `useAlgo.ts`.
+- Si el hook depende de un Context (como `useTheme`), debe lanzar un error explícito si se usa fuera de su Provider (ver `useTheme.ts` como referencia).
