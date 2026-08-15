@@ -3,7 +3,7 @@
 > Ranking global de usuarios validado contra resultados fraudulentos.
 
 **Última actualización:** 2026-08-04
-**Autor(es):** Marcelo Llanos
+**Autor(es):** Jmarcelo
 
 ---
 

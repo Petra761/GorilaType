@@ -3,7 +3,7 @@
 > Índice de historias de usuario del proyecto GorilaType.
 
 **Última actualización:** 2026-08-04
-**Autor(es):** Marcelo Llanos
+**Autor(es):** Jmarcelo
 
 ---
 

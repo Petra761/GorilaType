@@ -3,7 +3,7 @@
 > Cálculo, visualización y persistencia de métricas y resultados de cada prueba.
 
 **Última actualización:** 2026-08-04
-**Autor(es):** Marcelo Llanos
+**Autor(es):** Jmarcelo
 
 ---
 

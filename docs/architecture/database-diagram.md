@@ -13,7 +13,7 @@ Este documento describe el esquema de base de datos propuesto para la aplicació
 
 ## Diagrama
 
-![Diagrama de la base de datos](../images/db-diagram-v0.png)
+![Diagrama de la base de datos](../images/db-diagram-v1.png)
 
 <!-- TODO: completar -->
 <!-- Ajustar la ruta de la imagen según la ubicación final de este archivo dentro de docs/ -->
@@ -26,6 +26,7 @@ Table users {
   username varchar(50) [unique]
   email varchar(100) [unique]
   password_hash text
+  profile_picture_url text
   created_at timestamp
   last_login timestamp
 }
@@ -107,3 +108,5 @@ Table friends {
 - `test_details` no repite `raw_wpm` porque ya se almacena en `tests`, evitando redundancia.
 - Los índices únicos compuestos en `leaderboard_global` y `leaderboard_daily` garantizan una sola entrada de leaderboard por combinación de usuario, duración e idioma (y fecha, en el caso diario).
 - `friends` usa un índice único sobre `(user_id_1, user_id_2)` para evitar relaciones duplicadas.
+
+[Enlace al Diagrama de la base de datos](https://dbdiagram.io/d/Gorila-Type-6a5052c94ac62e474c70ba5e)

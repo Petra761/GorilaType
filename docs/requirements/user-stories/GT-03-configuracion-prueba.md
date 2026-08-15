@@ -3,7 +3,7 @@
 > Selección de modo e idioma antes de iniciar una prueba de mecanografía.
 
 **Última actualización:** 2026-07-30
-**Autor(es):** Marcelo Llanos
+**Autor(es):** Jmarcelo
 
 ---
 

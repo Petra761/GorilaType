@@ -3,7 +3,7 @@
 > Edición de datos básicos, personalización visual y eliminación de la cuenta del usuario.
 
 **Última actualización:** 2026-08-04
-**Autor(es):** Marcelo Llanos
+**Autor(es):** Jmarcelo
 
 ---
 

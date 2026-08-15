@@ -3,7 +3,7 @@
 > Adaptación de la interfaz a distintos tamaños de pantalla.
 
 **Última actualización:** 2026-08-04
-**Autor(es):** Marcelo Llanos
+**Autor(es):** Jmarcelo
 
 ---
 

@@ -3,7 +3,7 @@
 > Flujo completo de una prueba de escritura: captura de teclado, validación, retroalimentación y cierre.
 
 **Última actualización:** 2026-08-04
-**Autor(es):** Marcelo Llanos
+**Autor(es):** Jmarcelo
 
 ---
 

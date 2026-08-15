@@ -3,7 +3,7 @@
 > Registro, inicio de sesión y gestión del ciclo de vida de la sesión del usuario.
 
 **Última actualización:** 2026-08-04
-**Autor(es):** Marcelo Llanos
+**Autor(es):** Jmarcelo
 
 ---
 
@@ -78,6 +78,18 @@
   - No queda información de sesión accesible tras el cierre.
 
 ---
+
+### GT-01.5 – Asignación de Imagen de Perfil
+
+**Como** sistema, quiero asignar una imagen de perfil al usuario durante el registro para personalizar su cuenta desde el inicio.
+
+- **ID:** GT-01.5
+- **Prioridad:** Baja
+- **Story Points:** 3
+- **Criterios de aceptación:**
+  - Si el usuario usa OAuth (Google/GitHub), se captura y guarda la URL de la imagen proporcionada por el proveedor.
+  - Si el usuario usa registro tradicional, se genera automáticamente una URL de avatar usando un servicio externo (ej. DiceBear) basada en su username.
+  - La URL se almacena correctamente en el campo `profile_picture_url` de la tabla `users`.
 
 ## Detalles Generales
 
