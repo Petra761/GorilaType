@@ -59,6 +59,7 @@ $RECYCLE.BIN/
 .env
 .env.local
 .env.*.local
+!.env.example
 appsettings.Development.json
 appsettings.Local.json
 

@@ -1,63 +1,47 @@
-<!-- TODO: agregar logo aislado cuando esté disponible -->
-<!-- ![GorilaType Logo](./docs/assets/logo.png) -->
+<div align="center">
+  <img src="frontend/src/assets/hero.jpeg" alt="GorilaType" width="320" />
 
-# GorilaType
+  <h3>Un test de mecanografía, hecho para aprender a construir software en serio.</h3>
 
-> Plataforma de práctica de mecanografía (typing test). Proyecto personal enfocado en practicar buenas prácticas de desarrollo — documentación, flujo de trabajo con Git y estándares de código — más que en ser un producto comercial.
-
-**Última actualización:** 2026-07-16
-**Autor(es):** Equipo GorilaType
-
----
-
-## 1. Sobre el proyecto
-
-GorilaType no busca ser un proyecto comercial ni un producto final; es un espacio de práctica para aprender a programar de forma más ordenada, aplicando documentación real, convenciones de código y un flujo de trabajo en equipo (Git Flow básico). Aun así, se trabaja con la misma seriedad que un proyecto real: requisitos definidos, estándares de código y documentación mantenida al día.
-
----
-
-## 2. Estado del proyecto
-
-- 🚧 En desarrollo activo.
-- Sin despliegue público por el momento.
-- Existe una versión previa (**legacy**) hecha en HTML, CSS y JavaScript puro, disponible como release archivado del repositorio. La versión actual reemplaza esa base con .NET (backend) y React (frontend).
+  <p>
+    <img src="https://img.shields.io/badge/.NET-10-512BD4?style=flat-square&logo=dotnet&logoColor=white" alt=".NET 10" />
+    <img src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React 19" />
+    <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
+    <img src="https://img.shields.io/badge/TailwindCSS-v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS v4" />
+    <img src="https://img.shields.io/badge/Vite-8-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite 8" />
+    <img src="https://img.shields.io/badge/PostgreSQL-Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white" alt="Supabase" />
+  </p>
+</div>
 
 ---
 
-## 3. Tecnologías
+## Sobre el proyecto
 
-| Capa | Tecnología |
-|---|---|
-| Backend | .NET |
-| Frontend | React |
-| Base de datos | PostgreSQL *(pendiente de definir si se usará Supabase o una instancia propia)* |
+**GorilaType** es una app de práctica de mecanografía inspirada en [Monkeytype](https://monkeytype.com/). Es un proyecto de aprendizaje: el objetivo no es competir con la app original, sino practicar un flujo de trabajo profesional completo — arquitectura en capas, control de versiones, testing, documentación y buenas prácticas de equipo — de principio a fin.
 
----
+## Stack
 
-## 4. Documentación
+|                   |                                                                                            |
+| ----------------- | ------------------------------------------------------------------------------------------ |
+| **Backend**       | .NET 10 · Web API en capas (Controllers → Services → Repositories) · Entity Framework Core |
+| **Frontend**      | Vite · React 19 · TypeScript · React Router · Tailwind CSS v4 · Storybook · Vitest         |
+| **Base de datos** | PostgreSQL vía [Supabase](https://supabase.com/)                                           |
+| **Auth**          | JWT                                                                                        |
 
-Toda la documentación del proyecto vive en [`docs/`](./docs/README.md), incluyendo:
+## Empezar a desarrollar
 
-- [Requisitos funcionales](./docs/requirements/functional-requirements.md)
-- [Requisitos no funcionales](./docs/requirements/non-functional-requirements.md)
-- [Requisitos futuros y opcionales](./docs/requirements/future-requirements.md)
-- [Git Flow](./docs/workflow/git-flow.md)
-- [Estándares de código](./docs/guidelines/coding-standards.md)
-- [Convenciones de nombres](./docs/guidelines/naming-conventions.md)
-- [Guía de estilo Markdown](./docs/guidelines/markdown-style-guide.md)
+Toda la guía de instalación, comandos y flujo de trabajo está en [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
----
+## Documentación
 
-## 5. Cómo contribuir
+|                      |                                                            |
+| -------------------- | ---------------------------------------------------------- |
+| Arquitectura         | [`docs/architecture/`](./docs/architecture/)               |
+| Guías y convenciones | [`docs/guidelines/`](./docs/guidelines/)                   |
+| Requisitos           | [`docs/requirements/`](./docs/requirements/)               |
+| Flujo de Git         | [`docs/workflow/git-flow.md`](./docs/workflow/git-flow.md) |
 
-Los comandos del día a día (Git, migraciones de .NET, instalación de paquetes, correr el frontend, etc.) están en [`CONTRIBUTING.md`](./CONTRIBUTING.md).
+## Equipo
 
----
-
-## 6. Licencia
-
-Aún no se ha definido una licencia para este repositorio.
-
-> Una licencia de software define qué pueden hacer otros con el código (usarlo, modificarlo, distribuirlo, usarlo comercialmente, etc.). Sin una licencia explícita, por defecto el código está protegido por derechos de autor y otros no tienen permiso legal de usarlo, aunque el repositorio sea público. Si más adelante quieren definir una, algunas opciones comunes para proyectos personales/educativos en GitHub son **MIT** (muy permisiva, mínima fricción) o **GPL-3.0** (permisiva pero exige que los derivados también sean open source). Esto no es asesoría legal, solo una referencia general para que el equipo decida.
-
-<!-- TODO: actualizar esta sección una vez que se elija una licencia y se agregue el archivo LICENSE -->
+- [**Petra761**](https://github.com/Petra761)
+- [**marcelollanos456-lang**](https://github.com/marcelollanos456-lang)

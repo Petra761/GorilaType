@@ -1,0 +1,9 @@
+[data-theme='chaos-theory'] {
+  --background: #0b0710;
+  --background-alt: #180d1c;
+  --foreground: #f7eefb;
+  --primary: #ff2ec4;
+  --muted: #8a6b86;
+  --error: #ff4d6d;
+  --error-strong: #b0233f;
+}
