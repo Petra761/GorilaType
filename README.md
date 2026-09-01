@@ -40,6 +40,7 @@ Toda la guía de instalación, comandos y flujo de trabajo está en [`CONTRIBUTI
 | Guías y convenciones | [`docs/guidelines/`](./docs/guidelines/)                   |
 | Requisitos           | [`docs/requirements/`](./docs/requirements/)               |
 | Flujo de Git         | [`docs/workflow/git-flow.md`](./docs/workflow/git-flow.md) |
+| Historial de cambios | [`CHANGELOG.md`](./CHANGELOG.md)                           |
 
 ## Equipo
 
