@@ -65,33 +65,26 @@ public class Player
 
 ## 4. Evitar warnings del compilador
 
-El proyecto usa **nullable reference types** habilitado, por lo tanto toda propiedad o campo debe tener un valor inicial explícito para evitar warnings como `CS8618` (propiedad no nullable sin inicializar).
+El proyecto usa **nullable reference types** habilitado. El objetivo principal de este bloque es evitar warnings del compilador como `CS8618` (propiedad no nullable sin inicializar), sin que signifique una sobrecarga obligatoria para tipos por valor (primitivos como `int`, `double`, `bool`, etc., que ya cuentan con un valor por defecto no nulo y no generan warnings).
 
-Regla: **toda propiedad se inicializa según su tipo**, aunque el valor por defecto del tipo ya sea ese (para dejar la intención explícita y evitar el warning).
+Guía para inicializadores:
 
-| Tipo                      | Valor por defecto a usar                                            |
-| ------------------------- | ------------------------------------------------------------------- |
-| `string`                  | `= string.Empty;`                                                   |
-| `int`                     | `= 0;`                                                              |
-| `float` / `double`        | `= 0f;` / `= 0d;`                                                   |
-| `bool`                    | `= false;`                                                          |
-| `List<T>`                 | `= new List<T>();`                                                  |
-| `T?` (nullable explícito) | `= null;` (permitido solo si el campo es intencionalmente opcional) |
-| Clases propias            | `= new NombreClase();` o `= null!;` si se inicializa en constructor |
+| Tipo                             | Valor recomendado                   | Motivo / Contexto                                                                         |
+| -------------------------------- | ----------------------------------- | ----------------------------------------------------------------------------------------- |
+| `string` (requerido)             | `= null!;`                          | Evita `CS8618` delegando la asignación al ORM, mapeador o constructor.                    |
+| `List<T>` / Colecciones          | `= new List<T>();`                  | Evita `NullReferenceException` al acceder a colecciones vacías.                           |
+| Clases propias / Navegación (EF) | `= null!;` o `= new NombreClase();` | Evita `CS8618` en relaciones de navegación que EF Core inicializa en tiempo de ejecución. |
+| `T?` (nullable explícito)        | (opcional, `= null;` no requerido)  | El modificador `?` explicita la intención de aceptar null y previene el warning.          |
+| Primitivos (`int`, `bool`, etc.) | (opcional, `= 0;` no requerido)     | Al ser tipos por valor (value types), nunca son null y no generan `CS8618`.               |
 
 ```csharp
 public class GameSession
 {
-    public string SessionId { get; set; } = string.Empty;
+    public string SessionId { get; set; } = null!;
     public List<Player> Players { get; set; } = new List<Player>();
-    public int RoundNumber { get; set; } = 0;
+    public int RoundNumber { get; set; }
+    public Player? CurrentPlayer { get; set; }
 }
-```
-
-- Si una propiedad **debe** ser nullable porque su ausencia es un estado válido (por ejemplo, "jugador actual, si hay alguno conectado"), se marca explícitamente con `?` y no se fuerza un valor por defecto:
-
-```csharp
-public Player? CurrentPlayer { get; set; } = null;
 ```
 
 ---

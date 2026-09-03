@@ -2,7 +2,7 @@
 
 > Registro histórico de todos los cambios notables realizados en el proyecto **GorilaType**. Este documento sigue las directrices de [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y se adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
-**Última actualización:** 2026-09-01  
+**Última actualización:** 2026-09-03  
 **Autor(es):** Petra761
 
 ---
@@ -15,11 +15,13 @@ Esta versión representa una reingeniería completa del proyecto desde cero, ado
 
 - **Backend (.NET 10 API):**
   - Estructura en capas limpias: Controllers, Services, Repositories, Entities y DTOs (`GorilaType.Api`).
+  - Modelos de entidades de dominio (`User`, `OAuthAccount`, `Test`, `LeaderboardGlobal`, `LeaderboardDaily`, `Friendship`) y sus configuraciones Fluent API para EF Core y PostgreSQL.
+  - Configuración de `AppDbContext` con registro de configuraciones por ensamblado y filtro global de soft delete en `User`.
   - Integración de Entity Framework Core con PostgreSQL (Supabase).
   - Documentación interactiva de API con Scalar (`/scalar`) y endpoints OpenAPI.
   - Configuración basada en variables de entorno seguras mediante `DotNetEnv` y plantilla `.env.example`.
   - Proyecto de pruebas unitarias xUnit (`GorilaType.Api.Tests`).
-  - Configuración de formateo de código con CSharpier (`dotnet-tools.json`).
+  - Configuración de formateo de código con CSharpier (`dotnet-tools.json`, `.csharpierrc.json`).
 - **Frontend (Vite + React 19 + TypeScript):**
   - Configuración con Vite, React Router y Tailwind CSS v4.
   - Sistema de temas dinámicos multi-paleta con soporte para temas _Serika Dark_ y _Chaos Theory_ mediante variables CSS semánticas.
@@ -41,6 +43,7 @@ Esta versión representa una reingeniería completa del proyecto desde cero, ado
 ### Changed
 
 - Actualización y refinamiento del esquema de base de datos a la versión 2 (`docs/architecture/database-diagram.md`), optimizando entidades de usuarios, pruebas y métricas.
+- Actualización de estándares de codificación (`coding-standards.md`) para inicializadores contra advertencias `CS8618` y adopción de `= null!;` para strings requeridos.
 - Refactorización y estandarización de nombres clave y estructura en las historias de usuario.
 - Actualización de metadatos de autoría y fechas en todos los documentos de especificación.
 
