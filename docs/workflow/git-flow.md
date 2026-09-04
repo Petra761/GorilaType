@@ -2,7 +2,7 @@
 
 > Define el flujo de trabajo con Git que se usa en GorilaType: ramas, prefijos de commits y el proceso para llevar una feature desde que se empieza hasta que se integra.
 
-**Última actualización:** 2026-08-13
+**Última actualización:** 2026-09-04
 **Autor(es):** Petra761
 
 ---
@@ -102,7 +102,7 @@ chore: actualizar dependencias de npm
    git checkout -b feature/nombre-corto-descriptivo
 ```
 
-6. Trabajar y hacer commits siguiendo los prefijos de la sección 2.
+6. Trabajar y hacer commits siguiendo los prefijos de la sección 3.
 7. Subir la rama:
    ```bash
    git push origin feature/nombre-corto-descriptivo
@@ -118,3 +118,52 @@ chore: actualizar dependencias de npm
 - Nunca se hacen commits directos sobre `master` o `develop`; todo pasa por `feature/*` y Pull Request.
 - Antes de abrir el PR, la rama debe estar actualizada con `develop` (rebase o merge, a definir por el equipo) para evitar conflictos grandes al mergear.
 - El paso de `develop` a `master` se hace solo cuando el equipo decide que ese estado está listo para producción.
+
+---
+
+## 6. Versionamiento semántico (SemVer)
+
+GorilaType implementa el estándar de [Semantic Versioning 2.0.0](https://semver.org/lang/es/) para el etiquetado y control de versiones del proyecto en producción:
+
+```
+vMAYOR.MENOR.PARCHE (ej. v0.1.0)
+```
+
+### 6.1 Estado de desarrollo activo (`0.x.x`)
+
+- Mientras el proyecto se encuentre en desarrollo activo, construcción de cimientos e iteración de arquitectura, la versión se mantendrá en el rango **`0.x.x`**.
+- La versión **`1.0.0`** queda reservada de forma estricta para cuando exista el primer **flujo end-to-end mínimamente usable** (por ejemplo: registro de usuario → inicio de sesión / JWT → ejecución y persistencia de un test de mecanografía en base de datos), no antes.
+
+### 6.2 Criterios de incremento de versión (Bump)
+
+El incremento de números se evalúa únicamente al preparar un pase a `master`, considerando los cambios integrados desde el último release:
+
+| Componente           | Tipo de cambio                                | Criterio y ejemplo                                                                                                                                 |
+| -------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **PARCHE** (`0.x.Z`) | Bugfix (`fix`)                                | Correcciones de errores que no rompen compatibilidad ni alteran firmas públicas (ej. corrección en fórmula de consistencia o fix de estilos CSS).  |
+| **MENOR** (`0.Y.0`)  | Nueva funcionalidad (`feat`)                  | Nuevas características o módulos compatibles hacia atrás (ej. soporte para leaderboard diario, nuevo tema visual).                                 |
+| **MAYOR** (`X.0.0`)  | Ruptura de compatibilidad (_breaking change_) | Modificaciones incompatibles en contratos públicos existentes (ej. cambio en el payload o firma de JWT ya emitidos) o el hito fundacional `1.0.0`. |
+
+> [!NOTE]
+> Durante la serie `0.x.x`, los cambios de arquitectura que ajusten APIs internas o contratos no estables se absorben habitualmente mediante incrementos de versión **MENOR**, documentando siempre de forma explícita el impacto en [`CHANGELOG.md`](../../CHANGELOG.md).
+
+### 6.3 Creación y publicación de tags
+
+Los tags de Git representan versiones formales de producción y **se crean exclusivamente al hacer merge hacia `master`** (nunca en ramas `feature/*` ni en merges diarios a `develop`):
+
+1. Completar el merge de `develop` a `master`.
+2. Crear un tag anotado con la versión y un mensaje descriptivo:
+   ```bash
+   git checkout master
+   git pull origin master
+   git tag -a v0.1.0 -m "release: v0.1.0 - primer flujo de conexion a base de datos y entidades"
+   ```
+3. Publicar el tag al repositorio remoto:
+
+   ```bash
+   # Publicar un tag específico
+   git push origin v0.1.0
+
+   # O publicar todos los tags locales pendientes
+   git push --tags
+   ```
