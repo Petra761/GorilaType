@@ -2,7 +2,7 @@
 
 > Registro histórico de todos los cambios notables realizados en el proyecto **GorilaType**. Este documento sigue las directrices de [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y se adhiere a [Semantic Versioning](https://semver.org/lang/es/).
 
-**Última actualización:** 2026-09-03  
+**Última actualización:** 2026-09-04  
 **Autor(es):** Petra761
 
 ---
@@ -17,6 +17,8 @@ Esta versión representa una reingeniería completa del proyecto desde cero, ado
   - Estructura en capas limpias: Controllers, Services, Repositories, Entities y DTOs (`GorilaType.Api`).
   - Modelos de entidades de dominio (`User`, `OAuthAccount`, `Test`, `LeaderboardGlobal`, `LeaderboardDaily`, `Friendship`) y sus configuraciones Fluent API para EF Core y PostgreSQL.
   - Configuración de `AppDbContext` con registro de configuraciones por ensamblado y filtro global de soft delete en `User`.
+  - Configuración de conexión a PostgreSQL en Supabase vía Session Pooler IPv4 con roles segregados (`postgres` y `gorilatype_app`).
+  - Implementación de Row Level Security (RLS) en todas las tablas de dominio y función `app_current_user_id()`.
   - Integración de Entity Framework Core con PostgreSQL (Supabase).
   - Documentación interactiva de API con Scalar (`/scalar`) y endpoints OpenAPI.
   - Configuración basada en variables de entorno seguras mediante `DotNetEnv` y plantilla `.env.example`.
