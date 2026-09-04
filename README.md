@@ -32,6 +32,24 @@
 
 Toda la guía de instalación, comandos y flujo de trabajo está en [`CONTRIBUTING.md`](./CONTRIBUTING.md).
 
+### Configuración local de base de datos
+
+Para conectar el backend con la base de datos de Supabase en tu entorno local:
+
+1. **Crear archivo `.env`:** Copia `.env.example` en la raíz del repositorio como `.env`.
+2. **Configurar cadenas de conexión:** Solicita las credenciales del Session Pooler (`aws-0-us-east-1.pooler.supabase.com:5432`, IPv4) y completa:
+   - `ConnectionStrings__DefaultConnection`: Conexión de runtime con el rol `gorilatype_app` (`SSL Mode=Require;`).
+   - `ConnectionStrings__MigrationsConnection`: Conexión para migraciones con el rol `postgres` (`SSL Mode=Require;`).
+     _(Importante: no incluir `Trust Server Certificate` ya que Npgsql moderno no lo soporta)._
+3. **Aplicar migraciones pendientes:** Desde la carpeta `backend/`, ejecuta:
+   ```bash
+   dotnet ef database update --project src/GorilaType.Api --connection "<valor_de_MigrationsConnection>"
+   ```
+4. **Iniciar la API:**
+   ```bash
+   dotnet run --project src/GorilaType.Api
+   ```
+
 ## Documentación
 
 |                      |                                                            |

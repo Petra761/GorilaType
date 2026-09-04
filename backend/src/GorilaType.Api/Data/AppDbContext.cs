@@ -1,5 +1,6 @@
 using GorilaType.Api.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace GorilaType.Api.Data;
 
@@ -22,5 +23,24 @@ public class AppDbContext : DbContext
             typeof(AppDbContext).Assembly
         );
         base.OnModelCreating(modelBuilder);
+    }
+
+    // TODO: reemplazar el parámetro userId por el user_id extraído del JWT
+    // una vez que el middleware de autenticación real esté implementado.
+    public async Task<IDbContextTransaction> BeginUserScopedTransactionAsync(
+        Guid userId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var transaction = await Database.BeginTransactionAsync(
+            cancellationToken
+        );
+
+        await Database.ExecuteSqlInterpolatedAsync(
+            $"SELECT set_config('app.current_user_id', {userId.ToString()}, true)",
+            cancellationToken
+        );
+
+        return transaction;
     }
 }
