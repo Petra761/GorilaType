@@ -2,7 +2,7 @@
 
 > Esquema de la base de datos de la app de test de mecanografía, normalizado hasta 3FN. Para desarrolladores del proyecto GorilaType.
 
-**Última actualización:** 2026-09-04
+**Última actualización:** 2026-09-05
 **Autor(es):** marcelollanos456-lang, Petra761
 
 ---
@@ -13,7 +13,7 @@ Este documento describe el esquema de base de datos de la aplicación de test de
 
 ## Diagrama
 
-![Diagrama de la base de datos](../images/db-diagram-v3.png)
+![Diagrama de la base de datos](../images/db-diagram-v4.png)
 
 ## Esquema DBML
 
@@ -121,6 +121,20 @@ Table refresh_tokens {
     user_id
   }
 }
+
+Table password_reset_codes {
+  id uuid [pk]
+  user_id uuid [ref: > users.id]
+  code_hash text
+  expires_at timestamptz
+  attempts int [default: 0]
+  used_at timestamptz [null]
+  created_at timestamptz
+
+  indexes {
+    user_id
+  }
+}
 ```
 
 ## Cambios aplicados en v2
@@ -135,6 +149,12 @@ Table refresh_tokens {
 ## Cambios aplicados en v3
 
 - **refresh_tokens** (nueva): soporta persistencia de sesión (GT-01.1) con múltiples sesiones activas por usuario (multi-dispositivo). `token_hash` almacena un hash SHA-256 del token — no BCrypt, ya que el token es un valor aleatorio de alta entropía generado por el servidor, no una contraseña elegida por un humano. `revoked_at` nulo indica token activo; se establece al cerrar sesión o al rotar el token durante un refresh. Índice en `user_id` para listar o revocar las sesiones de un usuario; índice único en `token_hash` para evitar colisiones y permitir búsqueda directa durante el flujo de refresh.
+
+## Cambios aplicados en v4
+
+- **password_reset_codes** (nueva): soporta recuperación de contraseña (GT-01.3) mediante código numérico de 6 dígitos enviado por correo (Resend). `code_hash` almacena SHA-256 del código — a diferencia de `refresh_tokens`, aquí no basta con el hash para prevenir fuerza bruta dado el espacio reducido de combinaciones (10^6), por lo que se complementa con `expires_at` (15 minutos), `attempts` (máximo 5 intentos antes de invalidar) y `used_at` (un solo uso). No lleva índice único en `code_hash` porque dos usuarios distintos podrían generar coincidentemente el mismo código.
+
+- `password_reset_codes` no usa índice único en `code_hash` (a diferencia de `refresh_tokens`) porque el espacio de valores es pequeño (6 dígitos) y una colisión entre dos usuarios distintos es un evento legítimo, no un error; la unicidad efectiva del código se garantiza en conjunto con `user_id` y `expires_at`/`used_at` a nivel de aplicación.
 
 ## Notas de diseño
 
