@@ -2,7 +2,7 @@
 
 > Esquema de la base de datos de la app de test de mecanografía, normalizado hasta 3FN. Para desarrolladores del proyecto GorilaType.
 
-**Última actualización:** 2026-08-15
+**Última actualización:** 2026-09-04
 **Autor(es):** marcelollanos456-lang, Petra761
 
 ---
@@ -13,7 +13,7 @@ Este documento describe el esquema de base de datos de la aplicación de test de
 
 ## Diagrama
 
-![Diagrama de la base de datos](../images/db-diagram-v2.png)
+![Diagrama de la base de datos](../images/db-diagram-v3.png)
 
 ## Esquema DBML
 
@@ -108,6 +108,19 @@ Table friendships {
     (requester_id, addressee_id) [unique]
   }
 }
+
+Table refresh_tokens {
+  id uuid [pk]
+  user_id uuid [ref: > users.id]
+  token_hash text [unique]
+  expires_at timestamptz
+  created_at timestamptz
+  revoked_at timestamptz [null]
+
+  indexes {
+    user_id
+  }
+}
 ```
 
 ## Cambios aplicados en v2
@@ -119,10 +132,16 @@ Table friendships {
 - **leaderboard_global / leaderboard_daily**: sin cambios estructurales; `timestamp` → `timestamptz`. Se actualizan mediante un job programado en el backend (a documentar en `backend-architecture.md`).
 - **friends → friendships**: tabla renombrada; `user_id_1`/`user_id_2` reemplazados por `requester_id`/`addressee_id`; se agregó `status` (`pending`, `accepted`, `blocked`, `rejected`) y `updated_at`.
 
+## Cambios aplicados en v3
+
+- **refresh_tokens** (nueva): soporta persistencia de sesión (GT-01.1) con múltiples sesiones activas por usuario (multi-dispositivo). `token_hash` almacena un hash SHA-256 del token — no BCrypt, ya que el token es un valor aleatorio de alta entropía generado por el servidor, no una contraseña elegida por un humano. `revoked_at` nulo indica token activo; se establece al cerrar sesión o al rotar el token durante un refresh. Índice en `user_id` para listar o revocar las sesiones de un usuario; índice único en `token_hash` para evitar colisiones y permitir búsqueda directa durante el flujo de refresh.
+
 ## Notas de diseño
 
 - `deleted_at` en `users` implementa borrado lógico explícito (en vez de un campo `estado` genérico), registrando también el momento de la eliminación.
 - Los índices únicos compuestos en `leaderboard_global` y `leaderboard_daily` garantizan una sola entrada de leaderboard por combinación de usuario, duración e idioma (y fecha, en el caso diario).
 - `friendships` usa `requester_id`/`addressee_id` para distinguir quién inició la solicitud. El índice único sobre `(requester_id, addressee_id)` no previene el caso inverso (`B` solicitando a `A` cuando ya existe `A` → `B`); esa validación debe hacerse en la capa de aplicación.
+
+- `refresh_tokens` no reutiliza `deleted_at` como patrón de invalidación porque un token revocado y uno expirado por tiempo son estados semánticamente distintos que conviene diferenciar en las consultas del flujo de autenticación; por eso usa su propio campo `revoked_at`.
 
 [Enlace al Diagrama de la base de datos](https://dbdiagram.io/d/GorilaType-diagram-6a8105d3e093539a9ec24238)
