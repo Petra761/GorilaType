@@ -1,13 +1,15 @@
 @import 'tailwindcss';
-@import './styles/themes/serika-dark.css';
-@import './styles/themes/chaos-theory.css';
+@import './styles/themes.css';
 
-@theme inline {
-  --color-background: var(--background);
-  --color-background-alt: var(--background-alt);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-muted: var(--muted);
-  --color-error: var(--error);
-  --color-error-strong: var(--error-strong);
+@theme {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
 }

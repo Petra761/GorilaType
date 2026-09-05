@@ -1,0 +1,12 @@
+[data-theme='serika'][data-mode='dark'] {
+  --bg: #323437;
+  --surface: #2c2e31;
+  --surface-elevated: #3a3c3f;
+  --text-primary: #d1d0c5;
+  --text-secondary: #646669;
+  --border: #4b4d50;
+  --accent: #e2b714;
+  --accent-hover: #f2c94c;
+  --success: #4ade80;
+  --danger: #ca4754;
+}
