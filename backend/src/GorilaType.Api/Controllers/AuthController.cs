@@ -99,6 +99,24 @@ public class AuthController : ControllerBase
         }
     }
 
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        var refreshToken = Request.Cookies[RefreshTokenCookieName];
+
+        if (!string.IsNullOrEmpty(refreshToken))
+        {
+            await _authService.LogoutAsync(refreshToken);
+        }
+
+        Response.Cookies.Delete(
+            RefreshTokenCookieName,
+            new CookieOptions { Path = "/api/auth" }
+        );
+
+        return NoContent();
+    }
+
     private void SetRefreshTokenCookie(string refreshToken)
     {
         Response.Cookies.Append(

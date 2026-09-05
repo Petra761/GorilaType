@@ -149,4 +149,20 @@ public class AuthService : IAuthService
 
         return await IssueTokensAsync(user);
     }
+
+    public async Task LogoutAsync(string refreshToken)
+    {
+        var tokenHash = _tokenService.HashToken(refreshToken);
+        var storedToken = await _refreshTokenRepository.GetByTokenHashAsync(
+            tokenHash
+        );
+
+        if (storedToken is not null && storedToken.RevokedAt is null)
+        {
+            await _refreshTokenRepository.RevokeAsync(
+                storedToken.UserId,
+                storedToken.Id
+            );
+        }
+    }
 }

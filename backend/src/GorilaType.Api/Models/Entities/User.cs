@@ -23,4 +23,6 @@ public class User
         new List<Friendship>();
     public ICollection<Friendship> ReceivedFriendRequests { get; set; } =
         new List<Friendship>();
+    public ICollection<RefreshToken> RefreshTokens { get; set; } =
+        new List<RefreshToken>();
 }

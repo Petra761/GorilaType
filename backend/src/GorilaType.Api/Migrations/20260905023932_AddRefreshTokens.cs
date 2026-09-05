@@ -17,10 +17,22 @@ namespace GorilaType.Api.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    token_hash = table.Column<string>(type: "text", nullable: false),
-                    expires_at = table.Column<DateTime>(type: "timestamptz", nullable: false),
-                    created_at = table.Column<DateTime>(type: "timestamptz", nullable: false),
-                    revoked_at = table.Column<DateTime>(type: "timestamptz", nullable: true)
+                    token_hash = table.Column<string>(
+                        type: "text",
+                        nullable: false
+                    ),
+                    expires_at = table.Column<DateTime>(
+                        type: "timestamptz",
+                        nullable: false
+                    ),
+                    created_at = table.Column<DateTime>(
+                        type: "timestamptz",
+                        nullable: false
+                    ),
+                    revoked_at = table.Column<DateTime>(
+                        type: "timestamptz",
+                        nullable: true
+                    ),
                 },
                 constraints: table =>
                 {
@@ -30,26 +42,29 @@ namespace GorilaType.Api.Migrations
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+                        onDelete: ReferentialAction.Restrict
+                    );
+                }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_refresh_tokens_token_hash",
                 table: "refresh_tokens",
                 column: "token_hash",
-                unique: true);
+                unique: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_refresh_tokens_user_id",
                 table: "refresh_tokens",
-                column: "user_id");
+                column: "user_id"
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "refresh_tokens");
+            migrationBuilder.DropTable(name: "refresh_tokens");
         }
     }
 }
