@@ -1,5 +1,10 @@
 using DotNetEnv;
 using GorilaType.Api.Data;
+using GorilaType.Api.Models.Options;
+using GorilaType.Api.Repositories;
+using GorilaType.Api.Repositories.Interfaces;
+using GorilaType.Api.Services;
+using GorilaType.Api.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -13,6 +18,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")
     )
+);
+
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.Configure<JwtOptions>(
+    builder.Configuration.GetSection(JwtOptions.SectionName)
 );
 
 var app = builder.Build();
