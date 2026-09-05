@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using GorilaType.Api.Models.Entities;
 using GorilaType.Api.Models.Options;
@@ -45,5 +46,18 @@ public class TokenService : ITokenService
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public string GenerateRefreshToken()
+    {
+        var randomBytes = RandomNumberGenerator.GetBytes(64);
+        return Convert.ToBase64String(randomBytes);
+    }
+
+    public string HashToken(string token)
+    {
+        var bytes = Encoding.UTF8.GetBytes(token);
+        var hash = SHA256.HashData(bytes);
+        return Convert.ToHexString(hash);
     }
 }

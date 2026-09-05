@@ -4,6 +4,13 @@ namespace GorilaType.Api.Services.Interfaces;
 
 public interface IAuthService
 {
-    Task<AuthResponseDto> RegisterAsync(RegisterRequestDto request);
-    Task<AuthResponseDto> LoginAsync(LoginRequestDto request);
+    Task<(AuthResponseDto response, string refreshToken)> RegisterAsync(
+        RegisterRequestDto request
+    );
+    Task<(AuthResponseDto response, string refreshToken)> LoginAsync(
+        LoginRequestDto request
+    );
+    Task<(AuthResponseDto response, string refreshToken)> RefreshAsync(
+        string refreshToken
+    );
 }
