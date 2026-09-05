@@ -1,0 +1,42 @@
+@theme {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-success: var(--success);
+  --color-danger: var(--danger);
+}
+
+:root,
+[data-theme='malachite'][data-mode='dark'] {
+  --bg: #0b1210;
+  --surface: #121c19;
+  --surface-elevated: #182620;
+  --text-primary: #e7f3ed;
+  --text-secondary: #9fb8ae;
+  --border: #24352e;
+  --accent: #1d9e75;
+  --accent-hover: #26b98a;
+  --success: #4ade80;
+  --danger: #e24b4a;
+}
+
+[data-theme='malachite'][data-mode='light'] {
+  --bg: #f4fbf8;
+  --surface: #ffffff;
+  --surface-elevated: #eaf6f0;
+  --text-primary: #0b2118;
+  --text-secondary: #4b6358;
+  --border: #d7e8e0;
+  --accent: #0e7d5c;
+  --accent-hover: #0b6b4f;
+  --success: #16a34a;
+  --danger: #dc2626;
+}
+
+@import './themes/chaos-theory.css';
+@import './themes/serika.css';
