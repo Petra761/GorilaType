@@ -51,6 +51,8 @@ public class AuthService : IAuthService
             UpdatedAt = DateTime.UtcNow,
         };
 
+        user.ProfilePictureUrl = $"https://api.dicebear.com/10.x/identicon/svg?seed={user.Id}";
+
         await _userRepository.AddAsync(user);
         await _userRepository.SaveChangesAsync();
 
