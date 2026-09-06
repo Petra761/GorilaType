@@ -1,18 +1,13 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router'
-import { ThemeProvider } from '@/store/theme/ThemeContext'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { ThemeProvider } from '@/lib/themes/ThemeProvider'
 import App from './App'
 import './index.css'
 
-const root = document.getElementById('root')!
-
-ReactDOM.createRoot(root).render(
-  <React.StrictMode>
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
     <ThemeProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <App />
     </ThemeProvider>
-  </React.StrictMode>,
+  </StrictMode>,
 )

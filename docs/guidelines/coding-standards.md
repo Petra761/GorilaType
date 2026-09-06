@@ -3,6 +3,7 @@
 > Define cómo se debe escribir código C# en GorilaType: convenciones de nombres, estilo y reglas para evitar warnings del compilador. Aplica a todo el código nuevo del proyecto.
 
 **Última actualización:** 2026-08-13
+**Última actualización:** 2026-09-04
 **Autor(es):** Petra761
 
 ---
@@ -234,3 +235,20 @@ Colores disponibles: `background`, `background-alt`, `foreground`, `primary`, `m
 
 - Un hook custom = un archivo en `src/hooks/`, nombre `useAlgo.ts`.
 - Si el hook depende de un Context (como `useTheme`), debe lanzar un error explícito si se usa fuera de su Provider (ver `useTheme.ts` como referencia).
+
+### 12.5 Iconografía
+
+Toda la iconografía del proyecto está estandarizada bajo una única librería para garantizar coherencia visual en toda la aplicación:
+
+- **Librería exclusiva:** Toda la iconografía del proyecto utiliza exclusivamente **Tabler Icons** a través del paquete oficial `@tabler/icons-react` para React.
+- **Prohibición de SVGs manuales o generados:** Queda estrictamente prohibido dibujar SVGs de iconos a mano o generarlos mediante IA u otras herramientas externas.
+- **Prohibición de mezclar librerías:** No se permite mezclar con otras librerías de iconos (`lucide-react`, `heroicons`, `react-icons`, etc.).
+- **Motivo:** Mantener consistencia visual absoluta (mismo _stroke-width_, mismo grid de diseño base de 24×24) en toda la interfaz, optimizando el tiempo y recursos del equipo al evitar la creación artesanal de iconos con resultados dispares.
+- **Uso y tamaños:**
+  - Importación nombrada directa:
+    ```tsx
+    import { IconKeyboard, IconSettings } from "@tabler/icons-react";
+    ```
+  - **Tamaños estándar:**
+    - **16px a 20px:** Para uso _inline_ junto a texto, botones compactos o inputs (ej. `size={18}`).
+    - **24px:** Tamaño por defecto para acciones principales, barras de navegación o casos destacados (ej. `size={24}`).

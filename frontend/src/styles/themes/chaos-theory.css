@@ -1,9 +1,12 @@
-[data-theme='chaos-theory'] {
-  --background: #0b0710;
-  --background-alt: #180d1c;
-  --foreground: #f7eefb;
-  --primary: #ff2ec4;
-  --muted: #8a6b86;
-  --error: #ff4d6d;
-  --error-strong: #b0233f;
+[data-theme='chaos-theory'][data-mode='dark'] {
+  --bg: #0b0710;
+  --surface: #180d1c;
+  --surface-elevated: #221430;
+  --text-primary: #f7eefb;
+  --text-secondary: #8a6b86;
+  --border: #2e1f34;
+  --accent: #ff2ec4;
+  --accent-hover: #ff5cd4;
+  --success: #4ade80;
+  --danger: #ff4d6d;
 }

@@ -2,6 +2,30 @@
 <html lang="es" data-theme="serika-dark">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      ;(function () {
+        try {
+          var THEME_KEY = 'gorilatype:theme-id'
+          var MODE_KEY = 'gorilatype:mode'
+          var DEFAULT_THEME = 'malachite'
+          var DEFAULT_MODE = 'dark'
+
+          var VARIANTS = __THEME_VARIANTS_JSON__
+
+          var themeId = localStorage.getItem(THEME_KEY) || DEFAULT_THEME
+          var preferredMode = localStorage.getItem(MODE_KEY) || DEFAULT_MODE
+
+          var variants = VARIANTS[themeId] || VARIANTS[DEFAULT_THEME]
+          var mode = variants[preferredMode] ? preferredMode : Object.keys(variants)[0]
+
+          document.documentElement.setAttribute('data-theme', themeId)
+          document.documentElement.setAttribute('data-mode', mode)
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'malachite')
+          document.documentElement.setAttribute('data-mode', 'dark')
+        }
+      })()
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>frontend</title>
