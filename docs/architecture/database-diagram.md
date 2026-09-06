@@ -152,7 +152,7 @@ Table password_reset_codes {
 
 ## Cambios aplicados en v4
 
-- **password_reset_codes** (nueva): soporta recuperación de contraseña (GT-01.3) mediante código numérico de 6 dígitos enviado por correo (Resend). `code_hash` almacena SHA-256 del código — a diferencia de `refresh_tokens`, aquí no basta con el hash para prevenir fuerza bruta dado el espacio reducido de combinaciones (10^6), por lo que se complementa con `expires_at` (15 minutos), `attempts` (máximo 5 intentos antes de invalidar) y `used_at` (un solo uso). No lleva índice único en `code_hash` porque dos usuarios distintos podrían generar coincidentemente el mismo código.
+- **password_reset_codes** (nueva): soporta recuperación de contraseña (GT-01.3) mediante código numérico de 6 dígitos enviado por correo (SMTP vía cuenta de Gmail dedicada al proyecto). `code_hash` almacena SHA-256 del código — a diferencia de `refresh_tokens`, aquí no basta con el hash para prevenir fuerza bruta dado el espacio reducido de combinaciones (10^6), por lo que se complementa con `expires_at` (15 minutos), `attempts` (máximo 5 intentos antes de invalidar) y `used_at` (un solo uso). No lleva índice único en `code_hash` porque dos usuarios distintos podrían generar coincidentemente el mismo código.
 
 - `password_reset_codes` no usa índice único en `code_hash` (a diferencia de `refresh_tokens`) porque el espacio de valores es pequeño (6 dígitos) y una colisión entre dos usuarios distintos es un evento legítimo, no un error; la unicidad efectiva del código se garantiza en conjunto con `user_id` y `expires_at`/`used_at` a nivel de aplicación.
 
