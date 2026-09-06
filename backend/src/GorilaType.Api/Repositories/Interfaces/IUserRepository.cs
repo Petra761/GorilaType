@@ -10,4 +10,5 @@ public interface IUserRepository
     Task AddAsync(User user);
     Task SaveChangesAsync();
     Task UpdateLastLoginAsync(Guid userId);
+    Task UpdatePasswordAsync(Guid userId, string newPasswordHash);
 }

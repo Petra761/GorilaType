@@ -117,6 +117,37 @@ public class AuthController : ControllerBase
         return NoContent();
     }
 
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword(
+        ForgotPasswordRequestDto request
+    )
+    {
+        var email = await _authService.ForgotPasswordAsync(request);
+        return Ok(
+            new { message = $"Se envió un código de recuperación a {email}." }
+        );
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword(
+        ResetPasswordRequestDto request
+    )
+    {
+        try
+        {
+            await _authService.ResetPasswordAsync(request);
+            return NoContent();
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Problem(
+                detail: ex.Message,
+                statusCode: StatusCodes.Status401Unauthorized,
+                title: "No se pudo restablecer la contraseña."
+            );
+        }
+    }
+
     private void SetRefreshTokenCookie(string refreshToken)
     {
         Response.Cookies.Append(

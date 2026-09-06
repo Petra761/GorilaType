@@ -57,4 +57,22 @@ public class UserRepository : IUserRepository
 
         await transaction.CommitAsync();
     }
+
+    public async Task UpdatePasswordAsync(Guid userId, string newPasswordHash)
+    {
+        await using var transaction =
+            await _context.BeginUserScopedTransactionAsync(userId);
+
+        var user = await _context.Users.FirstOrDefaultAsync(u =>
+            u.Id == userId
+        );
+        if (user is not null)
+        {
+            user.PasswordHash = newPasswordHash;
+            user.UpdatedAt = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+        }
+
+        await transaction.CommitAsync();
+    }
 }

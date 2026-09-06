@@ -17,6 +17,8 @@ public class AppDbContext : DbContext
     public DbSet<LeaderboardDaily> LeaderboardDaily => Set<LeaderboardDaily>();
     public DbSet<Friendship> Friendships => Set<Friendship>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+    public DbSet<PasswordResetCode> PasswordResetCodes =>
+        Set<PasswordResetCode>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

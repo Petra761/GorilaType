@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using GorilaType.Api.Models.Dto.Auth;
 using GorilaType.Api.Models.Entities;
 using GorilaType.Api.Repositories.Interfaces;
@@ -9,19 +10,30 @@ public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
+    private readonly IPasswordResetCodeRepository _passwordResetCodeRepository;
     private readonly ITokenService _tokenService;
+    private readonly IEmailService _emailService;
+    private readonly ILogger<AuthService> _logger;
 
     private const int RefreshTokenExpirationDays = 7;
+    private const int PasswordResetCodeExpirationMinutes = 15;
+    private const int PasswordResetMaxAttempts = 5;
 
     public AuthService(
         IUserRepository userRepository,
         IRefreshTokenRepository refreshTokenRepository,
-        ITokenService tokenService
+        IPasswordResetCodeRepository passwordResetCodeRepository,
+        ITokenService tokenService,
+        IEmailService emailService,
+        ILogger<AuthService> logger
     )
     {
         _userRepository = userRepository;
         _refreshTokenRepository = refreshTokenRepository;
+        _passwordResetCodeRepository = passwordResetCodeRepository;
         _tokenService = tokenService;
+        _emailService = emailService;
+        _logger = logger;
     }
 
     public async Task<(
@@ -164,5 +176,108 @@ public class AuthService : IAuthService
                 storedToken.Id
             );
         }
+    }
+
+    public async Task<string> ForgotPasswordAsync(
+        ForgotPasswordRequestDto request
+    )
+    {
+        var code = GenerateSixDigitCode();
+        var codeHash = _tokenService.HashToken(code);
+
+        var user = await _userRepository.GetByEmailAsync(request.Email);
+
+        if (user is not null && user.DeletedAt is null)
+        {
+            await _passwordResetCodeRepository.InvalidateActiveByUserIdAsync(
+                user.Id
+            );
+
+            await _passwordResetCodeRepository.CreateAsync(
+                user.Id,
+                codeHash,
+                DateTime.UtcNow.AddMinutes(PasswordResetCodeExpirationMinutes)
+            );
+
+            try
+            {
+                await _emailService.SendPasswordResetCodeAsync(
+                    user.Email,
+                    user.Username,
+                    code
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    ex,
+                    "Fallo al enviar el correo de recuperación de contraseña para el usuario {UserId}",
+                    user.Id
+                );
+            }
+        }
+
+        return request.Email;
+    }
+
+    private static string GenerateSixDigitCode()
+    {
+        return RandomNumberGenerator.GetInt32(0, 1_000_000).ToString("D6");
+    }
+
+    public async Task ResetPasswordAsync(ResetPasswordRequestDto request)
+    {
+        var user = await _userRepository.GetByEmailAsync(request.Email);
+
+        if (user is null || user.DeletedAt is not null)
+        {
+            throw new UnauthorizedAccessException(
+                "Código inválido o expirado."
+            );
+        }
+
+        var resetCode =
+            await _passwordResetCodeRepository.GetActiveByUserIdAsync(user.Id);
+
+        if (resetCode is null)
+        {
+            throw new UnauthorizedAccessException(
+                "Código inválido o expirado."
+            );
+        }
+
+        if (resetCode.Attempts >= PasswordResetMaxAttempts)
+        {
+            await _passwordResetCodeRepository.MarkAsUsedAsync(
+                user.Id,
+                resetCode.Id
+            );
+            throw new UnauthorizedAccessException(
+                "Se superó el número máximo de intentos. Solicita un nuevo código."
+            );
+        }
+
+        var codeHash = _tokenService.HashToken(request.Code);
+
+        if (codeHash != resetCode.CodeHash)
+        {
+            await _passwordResetCodeRepository.IncrementAttemptsAsync(
+                user.Id,
+                resetCode.Id
+            );
+            throw new UnauthorizedAccessException(
+                "Código inválido o expirado."
+            );
+        }
+
+        var newPasswordHash = BCrypt.Net.BCrypt.HashPassword(
+            request.NewPassword
+        );
+        await _userRepository.UpdatePasswordAsync(user.Id, newPasswordHash);
+
+        await _passwordResetCodeRepository.MarkAsUsedAsync(
+            user.Id,
+            resetCode.Id
+        );
     }
 }
