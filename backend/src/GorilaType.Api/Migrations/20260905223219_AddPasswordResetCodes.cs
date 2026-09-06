@@ -17,11 +17,27 @@ namespace GorilaType.Api.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     user_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    code_hash = table.Column<string>(type: "text", nullable: false),
-                    expires_at = table.Column<DateTime>(type: "timestamptz", nullable: false),
-                    attempts = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    used_at = table.Column<DateTime>(type: "timestamptz", nullable: true),
-                    created_at = table.Column<DateTime>(type: "timestamptz", nullable: false)
+                    code_hash = table.Column<string>(
+                        type: "text",
+                        nullable: false
+                    ),
+                    expires_at = table.Column<DateTime>(
+                        type: "timestamptz",
+                        nullable: false
+                    ),
+                    attempts = table.Column<int>(
+                        type: "integer",
+                        nullable: false,
+                        defaultValue: 0
+                    ),
+                    used_at = table.Column<DateTime>(
+                        type: "timestamptz",
+                        nullable: true
+                    ),
+                    created_at = table.Column<DateTime>(
+                        type: "timestamptz",
+                        nullable: false
+                    ),
                 },
                 constraints: table =>
                 {
@@ -31,20 +47,22 @@ namespace GorilaType.Api.Migrations
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
+                        onDelete: ReferentialAction.Restrict
+                    );
+                }
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_password_reset_codes_user_id",
                 table: "password_reset_codes",
-                column: "user_id");
+                column: "user_id"
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "password_reset_codes");
+            migrationBuilder.DropTable(name: "password_reset_codes");
         }
     }
 }

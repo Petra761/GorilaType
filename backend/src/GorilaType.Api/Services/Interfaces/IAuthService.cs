@@ -16,4 +16,19 @@ public interface IAuthService
     Task LogoutAsync(string refreshToken);
     Task<string> ForgotPasswordAsync(ForgotPasswordRequestDto request);
     Task ResetPasswordAsync(ResetPasswordRequestDto request);
+    Task<(OAuthResultDto result, string? refreshToken)> LoginWithGoogleAsync(
+        string code
+    );
+    Task<(
+        AuthResponseDto response,
+        string refreshToken
+    )> CompleteOAuthRegistrationAsync(
+        CompleteOAuthRegistrationRequestDto request
+    );
+    Task<(OAuthResultDto result, string? refreshToken)> LoginWithGitHubAsync(
+        string code
+    );
+    Task<(OAuthResultDto result, string? refreshToken)> LoginWithDiscordAsync(
+        string code
+    );
 }

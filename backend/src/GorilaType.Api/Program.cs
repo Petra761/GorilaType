@@ -29,12 +29,26 @@ builder.Services.AddScoped<
     PasswordResetCodeRepository
 >();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IOAuthAccountRepository, OAuthAccountRepository>();
+
+builder.Services.AddHttpClient<IGoogleOAuthService, GoogleOAuthService>();
+builder.Services.AddHttpClient<IGitHubOAuthService, GitHubOAuthService>();
+builder.Services.AddHttpClient<IDiscordOAuthService, DiscordOAuthService>();
 
 builder.Services.Configure<JwtOptions>(
     builder.Configuration.GetSection(JwtOptions.SectionName)
 );
 builder.Services.Configure<SmtpOptions>(
     builder.Configuration.GetSection(SmtpOptions.SectionName)
+);
+builder.Services.Configure<GoogleOAuthOptions>(
+    builder.Configuration.GetSection(GoogleOAuthOptions.SectionName)
+);
+builder.Services.Configure<GitHubOAuthOptions>(
+    builder.Configuration.GetSection(GitHubOAuthOptions.SectionName)
+);
+builder.Services.Configure<DiscordOAuthOptions>(
+    builder.Configuration.GetSection(DiscordOAuthOptions.SectionName)
 );
 
 var app = builder.Build();

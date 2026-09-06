@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using System.Text;
 using GorilaType.Api.Models.Dto.Auth;
 using GorilaType.Api.Models.Entities;
 using GorilaType.Api.Repositories.Interfaces;
@@ -14,6 +15,10 @@ public class AuthService : IAuthService
     private readonly ITokenService _tokenService;
     private readonly IEmailService _emailService;
     private readonly ILogger<AuthService> _logger;
+    private readonly IOAuthAccountRepository _oauthAccountRepository;
+    private readonly IGoogleOAuthService _googleOAuthService;
+    private readonly IGitHubOAuthService _gitHubOAuthService;
+    private readonly IDiscordOAuthService _discordOAuthService;
 
     private const int RefreshTokenExpirationDays = 7;
     private const int PasswordResetCodeExpirationMinutes = 15;
@@ -25,7 +30,11 @@ public class AuthService : IAuthService
         IPasswordResetCodeRepository passwordResetCodeRepository,
         ITokenService tokenService,
         IEmailService emailService,
-        ILogger<AuthService> logger
+        ILogger<AuthService> logger,
+        IOAuthAccountRepository oauthAccountRepository,
+        IGoogleOAuthService googleOAuthService,
+        IGitHubOAuthService gitHubOAuthService,
+        IDiscordOAuthService discordOAuthService
     )
     {
         _userRepository = userRepository;
@@ -34,6 +43,10 @@ public class AuthService : IAuthService
         _tokenService = tokenService;
         _emailService = emailService;
         _logger = logger;
+        _oauthAccountRepository = oauthAccountRepository;
+        _googleOAuthService = googleOAuthService;
+        _gitHubOAuthService = gitHubOAuthService;
+        _discordOAuthService = discordOAuthService;
     }
 
     public async Task<(
@@ -279,5 +292,304 @@ public class AuthService : IAuthService
             user.Id,
             resetCode.Id
         );
+    }
+
+    public async Task<(
+        OAuthResultDto result,
+        string? refreshToken
+    )> LoginWithGoogleAsync(string code)
+    {
+        var googleUser = await _googleOAuthService.GetUserInfoAsync(code);
+        return await LoginWithOAuthProviderAsync(
+            "google",
+            googleUser.Id,
+            googleUser.Email,
+            googleUser.Name,
+            googleUser.Picture
+        );
+    }
+
+    public async Task<(
+        OAuthResultDto result,
+        string? refreshToken
+    )> LoginWithGitHubAsync(string code)
+    {
+        var gitHubUser = await _gitHubOAuthService.GetUserInfoAsync(code);
+        return await LoginWithOAuthProviderAsync(
+            "github",
+            gitHubUser.Id,
+            gitHubUser.Email,
+            gitHubUser.Name,
+            gitHubUser.AvatarUrl
+        );
+    }
+
+    public async Task<(
+        OAuthResultDto result,
+        string? refreshToken
+    )> LoginWithDiscordAsync(string code)
+    {
+        var discordUser = await _discordOAuthService.GetUserInfoAsync(code);
+        return await LoginWithOAuthProviderAsync(
+            "discord",
+            discordUser.Id,
+            discordUser.Email,
+            discordUser.Name,
+            discordUser.AvatarUrl
+        );
+    }
+
+    private async Task<(
+        OAuthResultDto result,
+        string? refreshToken
+    )> LoginWithOAuthProviderAsync(
+        string provider,
+        string providerUserId,
+        string email,
+        string name,
+        string? pictureUrl
+    )
+    {
+        var existingOAuthAccount =
+            await _oauthAccountRepository.GetByProviderAsync(
+                provider,
+                providerUserId
+            );
+
+        if (existingOAuthAccount is not null)
+        {
+            var linkedUser = await _userRepository.GetByIdAsync(
+                existingOAuthAccount.UserId
+            );
+
+            if (linkedUser is null || linkedUser.DeletedAt is not null)
+            {
+                throw new UnauthorizedAccessException("Cuenta no disponible.");
+            }
+
+            await _userRepository.UpdateLastLoginAsync(linkedUser.Id);
+            var (response, refreshToken) = await IssueTokensAsync(linkedUser);
+
+            return (
+                new OAuthResultDto
+                {
+                    UsernameRequired = false,
+                    Auth = response,
+                },
+                refreshToken
+            );
+        }
+
+        var existingByEmail = await _userRepository.GetByEmailAsync(email);
+
+        if (existingByEmail is not null)
+        {
+            if (existingByEmail.DeletedAt is not null)
+            {
+                throw new UnauthorizedAccessException("Cuenta no disponible.");
+            }
+
+            await _oauthAccountRepository.CreateAsync(
+                existingByEmail.Id,
+                provider,
+                providerUserId
+            );
+            await _userRepository.UpdateLastLoginAsync(existingByEmail.Id);
+            var (response, refreshToken) = await IssueTokensAsync(
+                existingByEmail
+            );
+
+            return (
+                new OAuthResultDto
+                {
+                    UsernameRequired = false,
+                    Auth = response,
+                },
+                refreshToken
+            );
+        }
+
+        var candidateUsername = SanitizeUsername(name);
+        var usernameTaken = await _userRepository.GetByUsernameAsync(
+            candidateUsername
+        );
+
+        if (usernameTaken is null)
+        {
+            var newUser = new User
+            {
+                Id = Guid.NewGuid(),
+                Username = candidateUsername,
+                Email = email,
+                PasswordHash = null,
+                ProfilePictureUrl =
+                    pictureUrl
+                    ?? $"https://api.dicebear.com/10.x/identicon/svg?seed={Guid.NewGuid()}",
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+            };
+
+            await _userRepository.AddAsync(newUser);
+            await _userRepository.SaveChangesAsync();
+            await _oauthAccountRepository.CreateAsync(
+                newUser.Id,
+                provider,
+                providerUserId
+            );
+            await _userRepository.UpdateLastLoginAsync(newUser.Id);
+
+            var (response, refreshToken) = await IssueTokensAsync(newUser);
+
+            return (
+                new OAuthResultDto
+                {
+                    UsernameRequired = false,
+                    Auth = response,
+                },
+                refreshToken
+            );
+        }
+
+        var pendingToken = _tokenService.GeneratePendingRegistrationToken(
+            provider,
+            providerUserId,
+            email,
+            pictureUrl
+        );
+        var suggestions = await GenerateUsernameSuggestionsAsync(
+            candidateUsername
+        );
+
+        return (
+            new OAuthResultDto
+            {
+                UsernameRequired = true,
+                PendingToken = pendingToken,
+                SuggestedUsernames = suggestions,
+            },
+            null
+        );
+    }
+
+    public async Task<(
+        AuthResponseDto response,
+        string refreshToken
+    )> CompleteOAuthRegistrationAsync(
+        CompleteOAuthRegistrationRequestDto request
+    )
+    {
+        var principal = _tokenService.ValidatePendingRegistrationToken(
+            request.PendingToken
+        );
+
+        if (principal is null)
+        {
+            throw new UnauthorizedAccessException(
+                "El proceso de registro expiró o es inválido. Intenta de nuevo."
+            );
+        }
+
+        var provider = principal.FindFirst("provider")!.Value;
+        var providerUserId = principal.FindFirst("provider_user_id")!.Value;
+        var email = principal.FindFirst("email")!.Value;
+        var picture = principal.FindFirst("picture")?.Value;
+
+        var existingUsername = await _userRepository.GetByUsernameAsync(
+            request.Username
+        );
+        if (existingUsername is not null)
+        {
+            throw new InvalidOperationException(
+                "El nombre de usuario ya está en uso."
+            );
+        }
+
+        var existingOAuthAccount =
+            await _oauthAccountRepository.GetByProviderAsync(
+                provider,
+                providerUserId
+            );
+        if (existingOAuthAccount is not null)
+        {
+            throw new InvalidOperationException(
+                "Esta cuenta ya fue registrada."
+            );
+        }
+
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            Username = request.Username,
+            Email = email,
+            PasswordHash = null,
+            ProfilePictureUrl =
+                picture
+                ?? $"https://api.dicebear.com/10.x/identicon/svg?seed={Guid.NewGuid()}",
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
+        };
+
+        await _userRepository.AddAsync(user);
+        await _userRepository.SaveChangesAsync();
+        await _oauthAccountRepository.CreateAsync(
+            user.Id,
+            provider,
+            providerUserId
+        );
+        await _userRepository.UpdateLastLoginAsync(user.Id);
+
+        return await IssueTokensAsync(user);
+    }
+
+    private static string SanitizeUsername(string name)
+    {
+        var normalized = name.Normalize(NormalizationForm.FormD)
+            .Where(c =>
+                System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c)
+                != System.Globalization.UnicodeCategory.NonSpacingMark
+            )
+            .ToArray();
+
+        var withoutDiacritics = new string(normalized).Normalize(
+            NormalizationForm.FormC
+        );
+
+        var sanitized = new string(
+            withoutDiacritics
+                .ToLowerInvariant()
+                .Where(c => char.IsLetterOrDigit(c))
+                .ToArray()
+        );
+
+        if (sanitized.Length > 50)
+        {
+            sanitized = sanitized[..50];
+        }
+
+        if (sanitized.Length < 3)
+        {
+            sanitized = sanitized.PadRight(3, '0');
+        }
+
+        return sanitized;
+    }
+
+    private async Task<List<string>> GenerateUsernameSuggestionsAsync(
+        string baseUsername
+    )
+    {
+        var suggestions = new List<string>();
+
+        for (var i = 2; i <= 4 && suggestions.Count < 3; i++)
+        {
+            var candidate = $"{baseUsername}{i}";
+            var exists = await _userRepository.GetByUsernameAsync(candidate);
+            if (exists is null)
+            {
+                suggestions.Add(candidate);
+            }
+        }
+
+        return suggestions;
     }
 }

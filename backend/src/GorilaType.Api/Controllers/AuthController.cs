@@ -148,6 +148,117 @@ public class AuthController : ControllerBase
         }
     }
 
+    [HttpPost("oauth/google")]
+    public async Task<ActionResult<OAuthResultDto>> LoginWithGoogle(
+        OAuthLoginRequestDto request
+    )
+    {
+        try
+        {
+            var (result, refreshToken) =
+                await _authService.LoginWithGoogleAsync(request.Code);
+
+            if (refreshToken is not null)
+            {
+                SetRefreshTokenCookie(refreshToken);
+            }
+
+            return Ok(result);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Problem(
+                detail: ex.Message,
+                statusCode: StatusCodes.Status401Unauthorized,
+                title: "Autenticación fallida."
+            );
+        }
+    }
+
+    [HttpPost("oauth/complete-registration")]
+    public async Task<ActionResult<AuthResponseDto>> CompleteOAuthRegistration(
+        CompleteOAuthRegistrationRequestDto request
+    )
+    {
+        try
+        {
+            var (response, refreshToken) =
+                await _authService.CompleteOAuthRegistrationAsync(request);
+            SetRefreshTokenCookie(refreshToken);
+            return Ok(response);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Problem(
+                detail: ex.Message,
+                statusCode: StatusCodes.Status401Unauthorized,
+                title: "No se pudo completar el registro."
+            );
+        }
+        catch (InvalidOperationException ex)
+        {
+            return Problem(
+                detail: ex.Message,
+                statusCode: StatusCodes.Status409Conflict,
+                title: "No se pudo completar el registro."
+            );
+        }
+    }
+
+    [HttpPost("oauth/github")]
+    public async Task<ActionResult<OAuthResultDto>> LoginWithGitHub(
+        OAuthLoginRequestDto request
+    )
+    {
+        try
+        {
+            var (result, refreshToken) =
+                await _authService.LoginWithGitHubAsync(request.Code);
+
+            if (refreshToken is not null)
+            {
+                SetRefreshTokenCookie(refreshToken);
+            }
+
+            return Ok(result);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Problem(
+                detail: ex.Message,
+                statusCode: StatusCodes.Status401Unauthorized,
+                title: "Autenticación fallida."
+            );
+        }
+    }
+
+    [HttpPost("oauth/discord")]
+    public async Task<ActionResult<OAuthResultDto>> LoginWithDiscord(
+        OAuthLoginRequestDto request
+    )
+    {
+        try
+        {
+            var (result, refreshToken) =
+                await _authService.LoginWithDiscordAsync(request.Code);
+
+            if (refreshToken is not null)
+            {
+                SetRefreshTokenCookie(refreshToken);
+            }
+
+            return Ok(result);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Problem(
+                detail: ex.Message,
+                statusCode: StatusCodes.Status401Unauthorized,
+                title: "Autenticación fallida."
+            );
+        }
+    }
+
     private void SetRefreshTokenCookie(string refreshToken)
     {
         Response.Cookies.Append(
