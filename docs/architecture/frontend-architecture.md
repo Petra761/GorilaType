@@ -63,6 +63,7 @@ GorilaType soporta múltiples paletas de color (temas), cada una con hasta dos v
 ### 4.2. Fuente de verdad del catálogo
 
 El catálogo vive en `src/lib/themes/types.ts` y exporta `THEME_CATALOG` (un arreglo de `ThemeDefinition`). Cada tema declara:
+
 - `id`: identificador único en kebab-case.
 - `label`: nombre visible en la UI.
 - `variants`: modos que soporta (`variants: { dark?: true, light?: true }`).
@@ -96,6 +97,7 @@ Los tokens semánticos se configuran con la directiva `@theme` de Tailwind v4 en
 ### 4.4. Provider y persistencia
 
 El estado del tema se gestiona mediante `src/lib/themes/ThemeProvider.tsx`, el cual expone el hook `useTheme()` con las siguientes propiedades:
+
 - `themeId`: id del tema activo.
 - `mode`: variante activa (`dark` o `light`).
 - `setThemeId(id)`: cambia el tema actual.
@@ -103,6 +105,7 @@ El estado del tema se gestiona mediante `src/lib/themes/ThemeProvider.tsx`, el c
 - `canToggleMode`: `boolean` que indica si el tema actual soporta alternar entre variantes.
 
 **Persistencia y resolución:**
+
 1. Persiste por separado en `localStorage` el ID del tema (`gorilatype:theme-id`) y la preferencia de modo (`gorilatype:mode`).
 2. Resuelve el modo real contra las variantes soportadas por el tema activo: si el tema no soporta el modo preferido, cae automáticamente a la única variante disponible sin sobrescribir la preferencia global del usuario.
 3. Sincroniza los atributos `data-theme` y `data-mode` en `document.documentElement` (`<html>`).
@@ -131,3 +134,5 @@ Para incorporar un nuevo tema a GorilaType, seguir estos pasos en orden:
    - `--danger`
 3. **Importar el CSS:** Importar el archivo nuevo dentro de `src/styles/themes.css`.
 4. **Listo:** No es necesario modificar `index.html` ni `vite-plugins/theme-catalog-plugin.ts`, ya que leen `THEME_CATALOG` de manera automática durante el build.
+
+- **Tipografía**: sistema de fuentes personalizables (UI fija + tipeo seleccionable) — ver [`docs/architecture/typography.md`](./typography.md)
