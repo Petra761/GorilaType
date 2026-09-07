@@ -17,7 +17,7 @@ Test/práctica de mecanografía inspirado en Monkeytype. Es un proyecto de apren
 | Parte         | Tecnología                                                                                                          |
 | ------------- | ------------------------------------------------------------------------------------------------------------------- |
 | Backend       | .NET 10, un solo proyecto Web API en capas (Controllers → Services → Repositories → Data)                           |
-| Frontend      | Vite + React 19 + TypeScript, React Router (paquete `react-router`, sin `-dom`), Tailwind CSS v4, Storybook, Vitest |
+| Frontend      | Vite + React 19 + TypeScript, React Router (paquete `react-router`, sin `-dom`), Tailwind CSS v4, Vitest |
 | Base de datos | PostgreSQL vía Supabase (Session Pooler IPv4), EF Core + Npgsql + Row Level Security (RLS)                          |
 | Auth          | JWT (infraestructura lista, login real pendiente de la tabla `Users`)                                               |
 | Secretos      | `.env` en la raíz (nunca `dotnet user-secrets`)                                                                     |

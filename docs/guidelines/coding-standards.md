@@ -200,7 +200,7 @@ Flujo completo y diagramas → [`docs/architecture/backend-architecture.md`](../
 ### 12.1 Componentes
 
 - Siempre funcionales (no hay clases). Tipado explícito de props con `interface`, nunca `any`.
-- Cada componente de `components/ui/` se crea como trío: `Componente.tsx` + `Componente.stories.tsx` + `Componente.test.tsx` — ningún componente nuevo se commitea sin sus tres archivos.
+- Cada componente de `components/ui/` se crea como trío: `Componente.tsx` + `Componente.test.tsx` — ningún componente nuevo se commitea sin sus tres archivos.
 
 ```tsx
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
