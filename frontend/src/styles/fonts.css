@@ -1,0 +1,180 @@
+/* --- @font-face: una declaración por familia y peso --- */
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter/400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter/500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter/600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter/700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono/400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono/700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fira Code';
+  src: url('/fonts/fira-code/400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fira Code';
+  src: url('/fonts/fira-code/500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fira Code';
+  src: url('/fonts/fira-code/700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/ibm-plex-mono/400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/ibm-plex-mono/700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Space Mono';
+  src: url('/fonts/space-mono/400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Space Mono';
+  src: url('/fonts/space-mono/700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto Mono';
+  src: url('/fonts/roboto-mono/400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Roboto Mono';
+  src: url('/fonts/roboto-mono/500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Roboto Mono';
+  src: url('/fonts/roboto-mono/700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cascadia Code';
+  src: url('/fonts/cascadia-code/400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cascadia Code';
+  src: url('/fonts/cascadia-code/700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Chakra Petch';
+  src: url('/fonts/chakra-petch/400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Chakra Petch';
+  src: url('/fonts/chakra-petch/700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+/* ... repetir el mismo bloque para cada peso de cada familia en FONT_CATALOG ... */
+
+/* --- Fuente de UI: fija, no depende de ningún atributo --- */
+:root {
+  --font-ui: 'Inter', system-ui, sans-serif;
+}
+
+/* --- Fuente de tipeo: una regla por id del catálogo --- */
+[data-typing-font='jetbrains-mono'] {
+  --font-typing: 'JetBrains Mono', monospace;
+}
+[data-typing-font='fira-code'] {
+  --font-typing: 'Fira Code', monospace;
+}
+[data-typing-font='ibm-plex-mono'] {
+  --font-typing: 'IBM Plex Mono', monospace;
+}
+[data-typing-font='space-mono'] {
+  --font-typing: 'Space Mono', monospace;
+}
+[data-typing-font='roboto-mono'] {
+  --font-typing: 'Roboto Mono', monospace;
+}
+[data-typing-font='source-code-pro'] {
+  --font-typing: 'Source Code Pro', monospace;
+}
+[data-typing-font='cascadia-code'] {
+  --font-typing: 'Cascadia Code', monospace;
+}
+[data-typing-font='chakra-petch'] {
+  --font-typing: 'Chakra Petch', monospace;
+}

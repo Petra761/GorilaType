@@ -1,5 +1,4 @@
-<!doctype html>
-<html lang="es" data-theme="serika-dark">
+<html lang="es" data-theme="serika-dark" data-typing-font="jetbrains-mono">
   <head>
     <meta charset="UTF-8" />
     <script>
@@ -23,6 +22,20 @@
         } catch (e) {
           document.documentElement.setAttribute('data-theme', 'malachite')
           document.documentElement.setAttribute('data-mode', 'dark')
+        }
+
+        try {
+          var FONT_KEY = 'gorilatype:typing-font-id'
+          var DEFAULT_FONT = 'jetbrains-mono'
+
+          var FONT_IDS = __FONT_IDS_JSON__
+
+          var fontId = localStorage.getItem(FONT_KEY) || DEFAULT_FONT
+          if (FONT_IDS.indexOf(fontId) === -1) fontId = DEFAULT_FONT
+
+          document.documentElement.setAttribute('data-typing-font', fontId)
+        } catch (e) {
+          document.documentElement.setAttribute('data-typing-font', 'jetbrains-mono')
         }
       })()
     </script>
