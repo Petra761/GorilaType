@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './styles/themes.css';
+@import './styles/fonts.css';
 
 @theme {
   --color-bg: var(--bg);
@@ -12,4 +13,8 @@
   --color-accent-hover: var(--accent-hover);
   --color-success: var(--success);
   --color-danger: var(--danger);
+}
+
+body {
+  font-family: var(--font-ui);
 }
