@@ -54,7 +54,7 @@ Detalle completo de por qué se eligió `.env` en vez de `dotnet user-secrets` �
 
 ## 4. Autenticación (JWT)
 
-En progreso — trackeado en un Issue aparte. La infraestructura de JWT (middleware, generación y validación de tokens) se documenta acá una vez que esté mergeada a `develop`. El login real depende de que exista la tabla `Users` (a definir junto con el diagrama de base de datos).
+GorilaType usa autenticación sin estado basada en JWT: access tokens de corta duración (15 min) más refresh tokens persistidos en base de datos y entregados vía cookie httpOnly, con soporte para login tradicional y OAuth (Google, GitHub, Discord). El detalle completo del flujo, las decisiones de seguridad y el listado de endpoints se documentan en [`authentication.md`](./authentication.md).
 
 ---
 

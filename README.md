@@ -24,7 +24,7 @@
 |                   |                                                                                            |
 | ----------------- | ------------------------------------------------------------------------------------------ |
 | **Backend**       | .NET 10 · Web API en capas (Controllers → Services → Repositories) · Entity Framework Core |
-| **Frontend**      | Vite · React 19 · TypeScript · React Router · Tailwind CSS v4 · Storybook · Vitest         |
+| **Frontend**      | Vite · React 19 · TypeScript · React Router · Tailwind CSS v4 · Vitest         |
 | **Base de datos** | PostgreSQL vía [Supabase](https://supabase.com/)                                           |
 | **Auth**          | JWT                                                                                        |
 

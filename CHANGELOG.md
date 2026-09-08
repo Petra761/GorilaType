@@ -27,7 +27,6 @@ Esta versión representa una reingeniería completa del proyecto desde cero, ado
 - **Frontend (Vite + React 19 + TypeScript):**
   - Configuración con Vite, React Router y Tailwind CSS v4.
   - Sistema de temas dinámicos multi-paleta con soporte para temas _Serika Dark_ y _Chaos Theory_ mediante variables CSS semánticas.
-  - Entorno de desarrollo de componentes aislado con Storybook (`@storybook/react-vite`).
   - Suite de pruebas unitarias y de integración de componentes con Vitest y `@testing-library/react`.
   - Configuración de calidad de código con ESLint 10 y Prettier.
 - **Documentación del Proyecto:**

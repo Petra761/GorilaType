@@ -13,27 +13,29 @@
 
 ## Índice
 
-- [1. Principios de contribución](#1-principios-de-contribución)
-- [2. Requisitos del sistema](#2-requisitos-del-sistema)
-  - [Herramientas globales recomendadas](#herramientas-globales-recomendadas)
-- [3. Configuración del entorno local](#3-configuración-del-entorno-local)
-  - [3.1 Clonar el repositorio](#31-clonar-el-repositorio)
-  - [3.2 Backend (.NET 10)](#32-backend-net-10)
-  - [3.3 Frontend (React 19 + Vite)](#33-frontend-react-19--vite)
-- [4. Flujo de trabajo y estrategia de Git](#4-flujo-de-trabajo-y-estrategia-de-git)
-  - [4.1 Modelo de ramas](#41-modelo-de-ramas)
-  - [4.2 Diagrama de Git Flow](#42-diagrama-de-git-flow)
-  - [4.3 Ciclo de vida de una tarea](#43-ciclo-de-vida-de-una-tarea)
-  - [4.4 Convención de commits](#44-convención-de-commits)
-  - [4.5 Proceso de Pull Request y Code Review](#45-proceso-de-pull-request-y-code-review)
-- [5. Estándares de arquitectura y código](#5-estándares-de-arquitectura-y-código)
-  - [5.1 Arquitectura del Backend](#51-arquitectura-del-backend)
-  - [5.2 Arquitectura del Frontend y regla del trío](#52-arquitectura-del-frontend-y-regla-del-trío)
-- [6. Checklist de verificación previo a PR](#6-checklist-de-verificación-previo-a-pr)
-- [7. Reporte de incidencias y propuestas](#7-reporte-de-incidencias-y-propuestas)
-  - [Reportar un Error (Bug Report)](#reportar-un-error-bug-report)
-  - [Proponer una Mejora o Feature](#proponer-una-mejora-o-feature)
-- [8. Referencias de documentación](#8-referencias-de-documentación)
+- [Contributing to GorilaType](#contributing-to-gorilatype)
+  - [Índice](#índice)
+  - [1. Principios de contribución](#1-principios-de-contribución)
+  - [2. Requisitos del sistema](#2-requisitos-del-sistema)
+    - [Herramientas globales recomendadas](#herramientas-globales-recomendadas)
+  - [3. Configuración del entorno local](#3-configuración-del-entorno-local)
+    - [3.1 Clonar el repositorio](#31-clonar-el-repositorio)
+    - [3.2 Backend (.NET 10)](#32-backend-net-10)
+    - [3.3 Frontend (React 19 + Vite)](#33-frontend-react-19--vite)
+  - [4. Flujo de trabajo y estrategia de Git](#4-flujo-de-trabajo-y-estrategia-de-git)
+    - [4.1 Modelo de ramas](#41-modelo-de-ramas)
+    - [4.2 Diagrama de Git Flow](#42-diagrama-de-git-flow)
+    - [4.3 Ciclo de vida de una tarea](#43-ciclo-de-vida-de-una-tarea)
+    - [4.4 Convención de commits](#44-convención-de-commits)
+    - [4.5 Proceso de Pull Request y Code Review](#45-proceso-de-pull-request-y-code-review)
+  - [5. Estándares de arquitectura y código](#5-estándares-de-arquitectura-y-código)
+    - [5.1 Arquitectura del Backend](#51-arquitectura-del-backend)
+    - [5.2 Arquitectura del Frontend y regla del trío](#52-arquitectura-del-frontend-y-regla-del-trío)
+  - [6. Checklist de verificación previo a PR](#6-checklist-de-verificación-previo-a-pr)
+  - [7. Reporte de incidencias y propuestas](#7-reporte-de-incidencias-y-propuestas)
+    - [Reportar un Error (Bug Report)](#reportar-un-error-bug-report)
+    - [Proponer una Mejora o Feature](#proponer-una-mejora-o-feature)
+  - [8. Referencias de documentación](#8-referencias-de-documentación)
 
 ---
 
@@ -153,9 +155,6 @@ cd GorilaType
 
    # Iniciar interfaz visual de pruebas
    npm run test:ui
-
-   # Iniciar entorno de componentes Storybook (puerto 6006)
-   npm run storybook
 
    # Análisis estático de código con ESLint
    npm run lint
@@ -289,7 +288,6 @@ En el frontend, cada componente de interfaz ubicado en `src/components/ui/` debe
 flowchart LR
     subgraph ComponentFolder["src/components/ui/Button/"]
         Component["Button.tsx\nImplementación y lógica"]
-        Stories["Button.stories.tsx\nCatálogo visual en Storybook"]
         Tests["Button.test.tsx\nPruebas unitarias con Vitest"]
     end
 

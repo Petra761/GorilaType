@@ -44,13 +44,9 @@ Todo import dentro de `src/` usa `@/` en vez de rutas relativas (`@/components/u
 Dos herramientas, cada una para un propósito distinto:
 
 - **Vitest + jsdom + Testing Library** (`npm run test`) — verifica que un componente se comporta bien (renderiza lo que debe, responde a eventos). Corre en un DOM simulado, rápido.
-- **Storybook** (`npm run storybook`) — inspección visual manual: ver cómo se ve cada variante de un componente, aislado del resto de la app.
 
 Cada componente de `components/ui/` se entrega en trío: `Componente.tsx` + `Componente.stories.tsx` + `Componente.test.tsx`.
 
-> Nota: el addon `@storybook/addon-vitest`, que corre las stories como tests de navegador real (Chromium vía Playwright), quedó desactivado por un bug de compatibilidad con `aria-query` en este entorno. Si en una actualización futura de Storybook se resuelve, se puede reactivar agregando de nuevo el proyecto `storybookTest` en `vite.config.ts`.
-
----
 
 ## 4. Sistema de temas
 
