@@ -1,5 +1,5 @@
 // Layout base de la aplicación: header simple + espacio para el contenido de cada página
-import { Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom'
 
 export function MainLayout() {
   return (
@@ -11,5 +11,5 @@ export function MainLayout() {
         <Outlet />
       </main>
     </div>
-  );
+  )
 }

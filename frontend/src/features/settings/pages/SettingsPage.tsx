@@ -1,4 +1,4 @@
 // Configuración de test, tema, sonido, etc.
 export function SettingsPage() {
-  return <h1>Settings</h1>;
+  return <h1>Settings</h1>
 }
