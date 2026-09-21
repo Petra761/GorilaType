@@ -1,4 +1,9 @@
-// Punto de entrada de la API: configuración de servicios y del pipeline HTTP
+using DotNetEnv;
+using GorilaType.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+
+// Carga el .env de la raíz del monorepo (dos niveles arriba de backend/GorilaType.Api)
+Env.Load(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", ".env"));
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +32,11 @@ builder.Services.AddControllers();
 // Swagger/OpenAPI: documentación automática de los endpoints, solo se expone en desarrollo
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Registro del DbContext, usando la connection string cargada desde el .env
+builder.Services.AddDbContext<GorilaTypeDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
 
 var app = builder.Build();
 
