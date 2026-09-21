@@ -79,47 +79,66 @@ El detalle de cada estándar está en [docs/03-estandares-de-codigo/](./docs/03-
 
 ```text
 .
-├── docs/                                # Documentación formal del proyecto
-│   ├── 00-vision-y-alcance.md
-│   ├── 01-arquitectura/
-│   ├── 02-flujo-de-trabajo/             # Gitflow y Jira
-│   ├── 03-estandares-de-codigo/
-│   ├── 04-historias-de-usuario/
-│   ├── assets/                          # Logo, capturas y diagramas
-│   └── convencion-de-documentacion.md
+├── docs/
+│   └── ...
 │
-├── backend/                             # API (.NET, Clean Architecture)
+├── backend/
 │   ├── GorilaType.Domain/
 │   ├── GorilaType.Application/
 │   ├── GorilaType.Infrastructure/
-│   └── GorilaType.Api/
+│   ├── GorilaType.Api/
+│   └── GorilaType.slnx
 │
-├── frontend/                            # Aplicación web (React + TypeScript)
+├── frontend/
 │   └── src/
 │       ├── features/
 │       ├── shared/
 │       ├── routes/
 │       └── assets/
 │
+├── .env.example                         # Copiar como .env y completar (nunca versionar .env)
+├── package.json                         # Scripts para levantar/formatear frontend y backend desde la raíz
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
 ├── README.md
-└── AGENT.md                             # Contexto del proyecto para agentes de IA
+└── AGENT.md
 ```
 
 ---
 
 ## 6. Instalación y Entorno de Desarrollo
 
-El código del backend y del frontend todavía no se ha escrito (el proyecto arranca por la documentación). Esta sección se completará con los pasos reales de instalación en cuanto exista el código base. Como referencia de lo previsto:
+### Requisitos
 
-- **Frontend:** Node.js (versión LTS más reciente), `npm install`, `npm run dev`.
-- **Backend:** .NET SDK 10, `dotnet restore`, `dotnet run` sobre `GorilaType.Api`.
-- **Base de datos:** PostgreSQL local o instancia de Supabase, según la etapa.
+- Node.js (versión LTS más reciente)
+- .NET SDK 10
+- Cuenta y proyecto en Supabase (para la base de datos PostgreSQL)
 
-Docker está previsto para el desarrollo local, pero se implementará en una fase posterior del proyecto, no desde el arranque.
+### Pasos
 
----
+1. Clonar el repositorio.
+2. Copiar `.env.example` como `.env` en la raíz, y completar la cadena de conexión de Supabase (`ConnectionStrings__DefaultConnection`).
+3. Confiar el certificado de desarrollo HTTPS (una sola vez por máquina):
+4. Instalar todas las dependencias (frontend + backend) en un solo paso:
+
+```
+npm install
+npm run setup
+```
+
+5. Levantar frontend y backend juntos:
+
+```
+npm run dev
+```
+
+O por separado: `npm run dev:frontend` / `npm run dev:backend`.
+Por defecto:
+
+- Frontend: `http://localhost:5173`
+- Backend (API + Swagger): `https://localhost:7092` (la raíz redirige automáticamente a `/swagger` en desarrollo)
+
+## Docker está previsto para el desarrollo local, pero se implementará en una fase posterior del proyecto, no desde el arranque.
 
 ## 7. Flujo de Trabajo y Ramas (Gitflow)
 

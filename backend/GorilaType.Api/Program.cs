@@ -45,6 +45,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.MapGet("/", () => Results.Redirect("/swagger"));
 }
 
 // Redirige automáticamente las peticiones HTTP a HTTPS
