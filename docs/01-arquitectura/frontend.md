@@ -1,46 +1,76 @@
-# Estándares de Código — Frontend (React + TypeScript)
+# Arquitectura — Frontend
 
-> Ubicación prevista en el repo: `docs/03-estandares-de-codigo/frontend-react-ts.md`
+> Ubicación prevista en el repo: `docs/01-arquitectura/frontend.md`
 
-## 1. Stack
+## 1. Organización por feature/módulo
 
-- React 19.x
-- TypeScript 6.x
-- Vite 8.x
-- Tailwind CSS 4.x
+El frontend se organiza por feature/módulo, no por tipo de archivo. Cada feature agrupa todo lo que le pertenece (páginas, y a futuro componentes, hooks o lógica propios de esa feature). No se crean carpetas vacías de antemano — solo existen una vez que tienen contenido real.
 
-## 2. Formateo y linting
+```
+frontend/src/
+├── features/
+│   ├── typing-test/
+│   │   └── pages/
+│   │       └── HomePage.tsx
+│   ├── profile/
+│   │   └── pages/
+│   │       └── ProfilePage.tsx
+│   ├── settings/
+│   │   └── pages/
+│   │       └── SettingsPage.tsx
+│   ├── leaderboard/
+│   │   └── pages/
+│   │       └── LeaderboardPage.tsx
+│   ├── auth/
+│   │   └── pages/
+│   │       ├── AuthPage.tsx           # login y registro en una misma página
+│   │       ├── ForgotPasswordPage.tsx
+│   │       └── ResetPasswordPage.tsx
+│   ├── about/
+│   │   └── pages/
+│   │       └── AboutPage.tsx
+│   └── not-found/
+│       └── pages/
+│           └── NotFoundPage.tsx
+│
+├── shared/                            # todo lo reutilizable entre features
+│   ├── components/
+│   │   └── layout/
+│   │       └── MainLayout.tsx         # header + <Outlet /> para el contenido de cada página
+│   ├── hooks/
+│   └── utils/
+│
+└── routes/
+    └── AppRouter.tsx                  # definición centralizada de todas las rutas
+```
 
-- **ESLint** + **Prettier**, con configuración por defecto salvo que se documente una excepción específica.
+El detalle de nomenclatura y estándares de código para este stack está en [docs/03-estandares-de-codigo/frontend-react-ts.md](../03-estandares-de-codigo/frontend-react-ts.md).
 
-## 3. Nomenclatura
+## 2. Rutas
 
-| Elemento                        | Convención                  | Ejemplo                     |
-| :------------------------------ | :-------------------------- | :-------------------------- |
-| Componentes (archivo y función) | PascalCase                  | `TestResultCard.tsx`        |
-| Hooks propios                   | camelCase con prefijo `use` | `useTypingTest.ts`          |
-| Variables y funciones           | camelCase                   | `calculateWpm()`            |
-| Tipos e interfaces              | PascalCase                  | `TestResult`, `UserProfile` |
+Se usa `react-router-dom`. Todas las rutas están definidas de forma centralizada en `routes/AppRouter.tsx`, anidadas dentro de `MainLayout` (así el layout se renderiza una sola vez y cada página aparece dentro de él vía `<Outlet />`).
 
-Los nombres se escriben en **inglés**; los comentarios se escriben en **español**.
+| Ruta                    | Página             | Descripción                             |
+| :---------------------- | :----------------- | :-------------------------------------- |
+| `/`                     | HomePage           | Test de mecanografía                    |
+| `/profile`              | ProfilePage        | Perfil del usuario                      |
+| `/settings`             | SettingsPage       | Configuración                           |
+| `/leaderboard`          | LeaderboardPage    | Ranking                                 |
+| `/auth`                 | AuthPage           | Login y registro (misma página)         |
+| `/auth/forgot-password` | ForgotPasswordPage | Solicitud de recuperación de contraseña |
+| `/auth/reset-password`  | ResetPasswordPage  | Ingreso del código y nueva contraseña   |
+| `/about`                | AboutPage          | Información del proyecto                |
+| `*`                     | NotFoundPage       | Cualquier ruta no definida              |
 
-## 4. Gestión de estado
+## 3. Layout
 
-No hay una librería de estado global fija decidida de antemano: se define según la necesidad de cada módulo (por ejemplo, Context API para estado simple compartido, o una librería dedicada si un módulo lo justifica — como el estado en tiempo real de una partida PvP más adelante).
+`MainLayout` vive en `shared/components/layout/`, no dentro de un feature específico, ya que envuelve a toda la aplicación. Por ahora es mínimo (header con el nombre del proyecto); se irá completando con navegación y demás elementos comunes a medida que se necesiten.
 
-## 5. Estilos
+## 4. Rutas protegidas
 
-Tailwind CSS, siguiendo el design system propio de GorilaType (colores, tipografía y tokens definidos en `docs/01-arquitectura/`), que además debe soportar la personalización de temas del usuario (colores, tipografía, sonidos, caret) definida como requisito del MVP.
+Todavía no implementadas. Proteger rutas depende de tener el estado de autenticación funcionando (JWT real), por lo que se aborda junto con la feature de `auth`, no antes.
 
-## 6. Testing
+## 5. Pendiente de definir
 
-Se escriben tests automatizados para los componentes del frontend.
-
-## 7. CI
-
-La ejecución de linters/analizadores automáticos en CI (GitHub Actions) queda para una fase posterior al MVP inicial.
-
-## 8. Pendiente de definir
-
-- Librería de testing específica (ej. Vitest + Testing Library) — a confirmar cuando se arranque el proyecto.
-- Convención de organización de carpetas dentro de `src/` (por feature vs. por tipo) — a definir junto con `docs/01-arquitectura/frontend.md`.
+- Librería de testing específica (Vitest + Testing Library u otra) — ver `docs/03-estandares-de-codigo/frontend-react-ts.md`.
+- Estrategia de rutas protegidas (guard/wrapper de ruta, redirección) — se define junto con la feature de `auth`.

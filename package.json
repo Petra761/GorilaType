@@ -1,0 +1,19 @@
+{
+  "name": "gorilatype",
+  "private": true,
+  "scripts": {
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "dotnet run --project backend/GorilaType.Api",
+    "dev": "concurrently -n FRONTEND,BACKEND -c blue,green \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "format:frontend": "npm --prefix frontend run format",
+    "format:backend": "cd backend && dotnet csharpier format .",
+    "format": "npm run format:frontend && npm run format:backend",
+    "lint:frontend": "npm --prefix frontend run lint:fix",
+    "build:frontend": "npm --prefix frontend run build",
+    "build:backend": "dotnet build backend/GorilaType.slnx",
+    "setup": "npm --prefix frontend install && dotnet restore backend/GorilaType.slnx"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
