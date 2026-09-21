@@ -8,7 +8,7 @@ Este archivo es contexto para agentes de IA que trabajen en este repositorio, no
 - Qué es: plataforma web de mecanografía. No es solo un test — contempla tres módulos: test de mecanografía (MVP), lecciones guiadas estilo TypingClub (post-MVP), modo PvP/battle royale estilo Tetr.io (post-MVP).
 - Propósito real: ejercicio de aprendizaje de prácticas profesionales de desarrollo (documentación, Gitflow, Jira, arquitectura, estándares de código), con calidad suficiente para portafolio profesional.
 - Repo: monorepo (`docs/`, `backend/`, `frontend/` en un mismo repo). Hospedado en `Petra761/GorilaType`.
-- Estado actual: solo existe documentación. No hay código de `backend/` ni `frontend/` todavía.
+- Estado actual: scaffold base de frontend y backend implementado (GT-4). Frontend con rutas y layout funcionando; backend con Clean Architecture, CORS, Swagger, CSharpier y conexión a PostgreSQL vía EF Core. Todavía no hay módulos de negocio implementados (entidades, casos de uso, endpoints reales) — eso empieza en tickets posteriores.
 
 ## Regla de oro
 
@@ -29,6 +29,15 @@ Antes de proponer o generar cualquier cosa que contradiga una decisión ya tomad
 
 Tiempo real (SignalR) para PvP: no decidido, no implementar todavía.
 
+## Comandos rápidos (desde la raíz del repo)
+
+- `npm install && npm run setup` — instala dependencias del frontend y hace `dotnet restore` del backend.
+- `npm run dev` — levanta frontend y backend juntos.
+- `npm run dev:frontend` / `npm run dev:backend` — por separado.
+- `npm run format` — formatea frontend (Prettier) y backend (CSharpier) en un solo paso.
+- `npm run build:frontend` / `npm run build:backend` — build de cada lado.
+- Solución de .NET: `backend/GorilaType.slnx` (formato `.slnx`, no `.sln`).
+
 ## Arquitectura — reglas de generación de código
 
 Detalle completo: [docs/01-arquitectura/](./docs/01-arquitectura/README.md)
@@ -48,18 +57,26 @@ backend/
 - DTOs viven en `Application/<Módulo>/Dtos/`. Los controllers de `Api` los reutilizan directamente — no crear DTOs duplicados en `Api`.
 - Mapeo EF Core: clases `IEntityTypeConfiguration<T>` en `Infrastructure/<Módulo>/Persistence/Configurations/`, nunca todo en el `DbContext`.
 - No crear carpetas de módulo sin contenido real.
+- CORS habilitado para el origen del frontend en desarrollo (`http://localhost:5173`).
+- Documentación de API: Swagger con UI (`/swagger`, raíz redirige ahí en desarrollo) + Thunder Client para pruebas manuales.
+- HTTPS activo por defecto en desarrollo (requisito de OAuth/Supabase).
 
-**Frontend** — organizado por feature, no por tipo de archivo:
+**Frontend** — organizado por feature/módulo, no por tipo de archivo (estructura ya implementada, no genérica):
 
 ```
 frontend/src/
-├── features/{auth,typing-test,profile,leaderboard}/{components,hooks,types}/
-├── shared/{components,hooks,types}/
-└── routes/
+├── features/{typing-test,profile,settings,leaderboard,auth,about,not-found}/pages/
+├── shared/{components/layout,hooks,utils}/
+└── routes/AppRouter.tsx
 ```
 
+- Rutas ya definidas: `/`, `/profile`, `/settings`, `/leaderboard`, `/auth` (login y registro en la misma página), `/auth/forgot-password`, `/auth/reset-password`, `/about`, `*`. Detalle en [docs/01-arquitectura/frontend.md](./docs/01-arquitectura/frontend.md).
+- `MainLayout` (header + `<Outlet />`) en `shared/components/layout/`, envuelve todas las rutas.
+- Rutas protegidas: no implementadas todavía, se abordan junto con la feature de `auth`.
 - No crear carpetas vacías.
 - Gestión de estado: sin librería fija — evaluar por feature.
+
+**Variables sensibles:** centralizadas en `.env`/`.env.example` en la raíz del monorepo (no por subcarpeta), convención `Seccion__Clave`, cargadas en el backend con `DotNetEnv`. Por ahora una sola connection string (`ConnectionStrings__DefaultConnection`); separar runtime/migraciones queda pendiente para cuando se implemente RLS.
 
 **Nomenclatura (ambos lados):** identificadores en inglés. Comentarios de código en español, dirigidos a quien lea el código (no mensajes dirigidos al dueño del repo).
 
@@ -78,7 +95,7 @@ Detalle: [docs/02-flujo-de-trabajo/](./docs/02-flujo-de-trabajo/README.md)
 Detalle: [docs/03-estandares-de-codigo/](./docs/03-estandares-de-codigo/README.md)
 
 - Frontend: ESLint + Prettier.
-- Backend: CSharpier.
+- Backend: CSharpier (correr `dotnet csharpier format .` parado en `backend/`, no desde la raíz — el manifest de la herramienta vive ahí).
 - Tests automatizados esperados en ambos lados (backend: al menos unitarios; frontend: componentes).
 - CI con linters automáticos: no implementado todavía, no asumir que existe.
 - JWT: implementación propia, no usar ASP.NET Identity completo.
@@ -130,6 +147,6 @@ Detalle: [docs/assets/README.md](./docs/assets/README.md)
 ## Pendiente de decidir (no asumir un valor)
 
 - Licencia del repositorio: se define al cierre del MVP (hoy sin licencia explícita).
-- Listado definitivo de páginas/rutas del frontend.
+- Separación de connection string de runtime (RLS) vs. migraciones (BYPASSRLS): pendiente hasta implementar RLS.
 - Límite de jugadores por sala de PvP.
 - Herramienta de analítica externa de producto.
