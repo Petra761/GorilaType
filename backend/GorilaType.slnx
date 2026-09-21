@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="GorilaType.Api/GorilaType.Api.csproj" />
+  <Project Path="GorilaType.Application/GorilaType.Application.csproj" />
+  <Project Path="GorilaType.Domain/GorilaType.Domain.csproj" />
+  <Project Path="GorilaType.Infrastructure/GorilaType.Infrastructure.csproj" />
+</Solution>
